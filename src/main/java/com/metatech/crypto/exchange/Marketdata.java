@@ -1,7 +1,8 @@
 package com.metatech.crypto.exchange;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.metatech.JavaCat.Testslf4j;
+import org.slf4j.Logger;
+import java.util.Properties;
 
 import com.google.api.client.http.*;
 import com.google.api.client.http.apache.v2.ApacheHttpTransport;
@@ -13,33 +14,46 @@ import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Marketdata {
     private String apiKey;
     private String apiSecret;
-    public static final String helpUsage = " -DCONFIG=<cfg file name> -DLOGFILE=<log4j properties file> -DTARGET=<exchange code>";
-    public static Logger logger;
+    public static final String helpUsage = "MarketData -DCONFIG=<cfg file name> -DTARGET=<exchange code>\n\n";
+ 
+    private static final Logger logger = Testslf4j.getLogger(Marketdata.class);
     public static Configuration targetExchange;
 
     public static void main(String[] args) {
         
-        String cfgFile = System.getProperty("CONFIG");
-        String logFile = System.getProperty("LOGFILE");
         String exchCode = System.getProperty("TARGET");
+        String cfgFile = System.getProperty("CONFIG");
 
-        if ( cfgFile == null || logFile == null){
-            System.out.print(args[0] + helpUsage);
+        Properties props = System.getProperties();
+        props.list(System.out);
+        
+        Map<String, String> env = System.getenv();
+        for (String key : env.keySet()) {
+            System.out.println(key + ": " + env.get(key));
+        }
+        
+        if ( cfgFile == null ){
+            System.out.print( helpUsage);
             System.exit(-1);
         }
         try {
-            logger = LogManager.getLogger(Marketdata.class);
+            // Load the log4j2.xml or log4j2.properties file
+            System.setProperty("current.date", new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date()));
+
             logger.info("CONFIG: " + cfgFile);
             Map<String, Configuration> myConfigMap = Configuration.loadConfig(cfgFile);
 
             Marketdata api = new Marketdata(exchCode, myConfigMap);
-            logger.info(api.getTicker());
+            // logger.info(api.getTicker());
+            logger.info(api.getPublicTicker());
             logger.info(api.getBalance());
         } catch ( Exception e) {
             logger.error(e.toString());
@@ -55,8 +69,14 @@ public class Marketdata {
 
     public String getTicker() {
         // String url = "https://coincheck.com/api/accounts/ticker";
-        String url = targetExchange.getUrl();
+        String url = targetExchange.getUrl() + "/ticker";
         String jsonString = requestByUrlWithHeader(url, createHeader(url));
+        return jsonString;
+    }
+
+    public String getPublicTicker() {
+        String url = "https://coincheck.com/api/ticker";
+        String jsonString = requestByUrl(url);
         return jsonString;
     }
 
@@ -97,6 +117,27 @@ public class Marketdata {
                     httpHeaders.set(e.getKey(), e.getValue());
                 }
                 request.setHeaders(httpHeaders);
+            }
+        });
+        String jsonString;
+        try {
+            HttpRequest request = factory.buildGetRequest(new GenericUrl(url));
+            HttpResponse response = request.execute();
+            jsonString = response.parseAsString();
+        } catch (IOException e) {
+            e.printStackTrace();
+            jsonString = null;
+        }
+        return jsonString;
+    }
+
+    private String requestByUrl(String url){
+        ApacheHttpTransport transport = new ApacheHttpTransport();
+        HttpRequestFactory factory = transport.createRequestFactory(new HttpRequestInitializer() {
+            public void initialize(final HttpRequest request) throws IOException {
+                request.setConnectTimeout(0);
+                request.setReadTimeout(0);
+                request.setParser(new GsonFactory().createJsonObjectParser());
             }
         });
         String jsonString;
