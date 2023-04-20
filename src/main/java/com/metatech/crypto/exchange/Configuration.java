@@ -1,8 +1,7 @@
 package com.metatech.crypto.exchange;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+import com.metatech.JavaCat.Testslf4j;
+import org.slf4j.Logger;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -19,6 +18,7 @@ import org.w3c.dom.Element;
 public class Configuration {
     private static final String MY_CONFIG_FILE = "exchange.cnf.xml";
     private static final Map<String, Configuration> CONFIGMAP = new HashMap<>();
+    private static final Logger logger = Testslf4j.getLogger(Configuration.class);
 
     private static String curConfigFile;
     private final String apiKey;
@@ -76,11 +76,11 @@ public class Configuration {
             Element root = doc.getDocumentElement();
 
             // Get the database information
-            Element database = (Element) root.getElementsByTagName("database").item(0);
-            String host = database.getElementsByTagName("host").item(0).getTextContent();
-            String port = database.getElementsByTagName("port").item(0).getTextContent();
-            String username = database.getElementsByTagName("username").item(0).getTextContent();
-            String password = database.getElementsByTagName("password").item(0).getTextContent();
+            // Element database = (Element) root.getElementsByTagName("database").item(0);
+            // String host = database.getElementsByTagName("host").item(0).getTextContent();
+            // String port = database.getElementsByTagName("port").item(0).getTextContent();
+            // String username = database.getElementsByTagName("username").item(0).getTextContent();
+            // String password = database.getElementsByTagName("password").item(0).getTextContent();
 
             // Get the exchange information
             Element exchanges = (Element) root.getElementsByTagName("coincheck").item(0);
@@ -89,11 +89,11 @@ public class Configuration {
             String apiSecret = exchanges.getElementsByTagName("api_secret").item(0).getTextContent();
             String exchangeName = exchanges.getElementsByTagName("exch_name").item(0).getTextContent();
             
-            Marketdata.logger.info("Exchange Name: " + exchangeName);
-            Marketdata.logger.info("Base URL: " + baseUrl);
-            Marketdata.logger.info("API Key: " + apiKey);
-            Marketdata.logger.info("API Secret: " + apiSecret);
-            Marketdata.logger.info("==============================");
+            logger.info("Exchange Name: " + exchangeName);
+            logger.info("Base URL: " + baseUrl);
+            logger.info("API Key: " + apiKey);
+            logger.info("API Secret: " + apiSecret);
+            logger.info("==============================");
             Configuration xConfig = new Configuration(apiKey, apiSecret, baseUrl, exchangeName);
             CONFIGMAP.put(exchangeName, xConfig);   
 
@@ -103,11 +103,11 @@ public class Configuration {
             apiKey = exchanges.getElementsByTagName("api_key").item(0).getTextContent();
             apiSecret = exchanges.getElementsByTagName("api_secret").item(0).getTextContent();
             exchangeName = exchanges.getElementsByTagName("exch_name").item(0).getTextContent();
-            Marketdata.logger.info("Exchange Name: " + exchangeName);
-            Marketdata.logger.info("Base URL: " + baseUrl);
-            Marketdata.logger.info("API Key: " + apiKey);
-            Marketdata.logger.info("API Secret: " + apiSecret);
-            Marketdata.logger.info("================================");
+            logger.info("Exchange Name: " + exchangeName);
+            logger.info("Base URL: " + baseUrl);
+            logger.info("API Key: " + apiKey);
+            logger.info("API Secret: " + apiSecret);
+            logger.info("================================");
             xConfig = new Configuration(apiKey, apiSecret, baseUrl, exchangeName);
             CONFIGMAP.put(exchangeName, xConfig);  
             // NodeList exchangeList = exchanges.getElementsByTagName("*");
