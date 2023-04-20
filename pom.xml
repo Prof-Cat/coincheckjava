@@ -25,31 +25,49 @@
 
   <dependencies>
     <dependency>
+      <groupId>com.metatech.JavaCat</groupId>
+      <artifactId>javacatLogger</artifactId>
+      <version>0.1</version>
+      <scope>compile</scope>
+    </dependency>
+    
+    <dependency>
       <groupId>com.google.api-client</groupId>
       <artifactId>google-api-client</artifactId>
       <version>1.32.1</version>
     </dependency>
+
     <dependency>
       <groupId>com.google.http-client</groupId>
       <artifactId>google-http-client-jackson2</artifactId>
       <version>1.40.1</version>
     </dependency>
+
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
       <version>2.15.0-rc1</version>
     </dependency>
+
     <dependency>
-  <groupId>junit</groupId>
+      <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.13.2</version>
       <scope>test</scope>
     </dependency>
-  <dependency>
-    <groupId>org.apache.logging.log4j</groupId>
-    <artifactId>log4j-core</artifactId>
-    <version>2.20.0</version>
-  </dependency>
+
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.4.6</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>2.0.7</version>
+      <type>pom</type>
+    </dependency>
 
   </dependencies>
 
