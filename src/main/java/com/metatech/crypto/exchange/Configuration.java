@@ -41,7 +41,7 @@ public class Configuration {
         return this.apiSecret;
     }
 
-    public String getUrl(){
+    public String getBaseUrl(){
         return this.baseUrl;
     }
 
