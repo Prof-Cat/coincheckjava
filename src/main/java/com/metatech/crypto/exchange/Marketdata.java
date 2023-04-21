@@ -4,19 +4,22 @@ import com.metatech.JavaCat.Testslf4j;
 import org.slf4j.Logger;
 import java.util.Properties;
 
-import com.google.api.client.http.*;
-import com.google.api.client.http.apache.v2.ApacheHttpTransport;
-import com.google.api.client.json.gson.GsonFactory;
 import org.apache.commons.codec.binary.Hex;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+
 import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
+// import java.util.HashMap;
 import java.util.Map;
 
 public class Marketdata {
@@ -53,8 +56,11 @@ public class Marketdata {
 
             Marketdata api = new Marketdata(exchCode, myConfigMap);
             // logger.info(api.getTicker());
-            logger.info(api.getPublicTicker());
-            logger.info(api.getBalance());
+            for ( int i=0; i<10; i++){
+                logger.info(api.getPublicTicker());
+                Thread.sleep(1000);
+            }
+            // logger.info(api.getPrivateBalance());
         } catch ( Exception e) {
             logger.error(e.toString());
         }
@@ -66,36 +72,59 @@ public class Marketdata {
         apiSecret = targetExchange.getSecret();
     }
 
-
-    public String getTicker() {
-        // String url = "https://coincheck.com/api/accounts/ticker";
-        String url = targetExchange.getUrl() + "/ticker";
-        String jsonString = requestByUrlWithHeader(url, createHeader(url));
-        return jsonString;
-    }
-
     public String getPublicTicker() {
-        String url = "https://coincheck.com/api/ticker";
-        String jsonString = requestByUrl(url);
+        String url = targetExchange.getBaseUrl() + "/ticker"; 
+        String jsonString = requestByPublicUrl(url);
         return jsonString;
     }
 
-    public String getBalance() {
-        String jsonString = requestByUrlWithHeader(targetExchange.getUrl(), createHeader(targetExchange.getUrl()));
+    public String getPublicTrades() {
+        String url = targetExchange.getBaseUrl() + "/trades"; 
+        String jsonString = requestByPublicUrl(url);
         return jsonString;
     }
 
-    private Map<String, String> createHeader(String url) {
-        Map<String, String> map = new HashMap<String, String>();
+    public String getPublicOrderBooks() {
+        String url = targetExchange.getBaseUrl() + "/order_books"; 
+        String jsonString = requestByPublicUrl(url);
+        return jsonString;
+    }
+
+    public String getPrivateTicker() {
+        String url = targetExchange.getBaseUrl() + "/account/ticker";
+        String jsonString = requestByUrlWithHeader(url);
+        return jsonString;
+    }
+
+    public String getPrivateBalance() {
+        String jsonString = requestByUrlWithHeader(targetExchange.getBaseUrl());
+        return jsonString;
+    }
+
+    private String requestByUrlWithHeader(String url){
+        HttpClient client = HttpClient.newHttpClient();
         String nonce = createNonce();
-        map.put("ACCESS-KEY", apiKey);
-        map.put("ACCESS-NONCE", nonce);
-        map.put("ACCESS-SIGNATURE", createSignature(nonce));
-        return map;
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .header("ACCESS-KEY", apiKey)
+                .header("ACCESS-NONCE", nonce)
+                .header("ACCESS-SIGNATURE", createSignature(nonce))
+                .GET()
+                .build();
+    
+        String jsonString;
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            jsonString = response.body();
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            jsonString = null;
+        }
+        return jsonString;
     }
 
     private String createSignature(String nonce) {
-        String message = nonce + targetExchange.getUrl();
+        String message = nonce + targetExchange.getBaseUrl();
         return HMAC_SHA256Encode(apiSecret, message);
     }
 
@@ -105,47 +134,17 @@ public class Marketdata {
         return nonce;
     }
 
-    private String requestByUrlWithHeader(String url, final Map<String, String> headers){
-        ApacheHttpTransport transport = new ApacheHttpTransport();
-        HttpRequestFactory factory = transport.createRequestFactory(new HttpRequestInitializer() {
-            public void initialize(final HttpRequest request) throws IOException {
-                request.setConnectTimeout(0);
-                request.setReadTimeout(0);
-                request.setParser(new GsonFactory().createJsonObjectParser());
-                final HttpHeaders httpHeaders = new HttpHeaders();
-                for (Map.Entry<String, String> e : headers.entrySet()) {
-                    httpHeaders.set(e.getKey(), e.getValue());
-                }
-                request.setHeaders(httpHeaders);
-            }
-        });
+    private String requestByPublicUrl(String url) {
         String jsonString;
+        logger.info(url);
         try {
-            HttpRequest request = factory.buildGetRequest(new GenericUrl(url));
-            HttpResponse response = request.execute();
-            jsonString = response.parseAsString();
-        } catch (IOException e) {
-            e.printStackTrace();
-            jsonString = null;
-        }
-        return jsonString;
-    }
-
-    private String requestByUrl(String url){
-        ApacheHttpTransport transport = new ApacheHttpTransport();
-        HttpRequestFactory factory = transport.createRequestFactory(new HttpRequestInitializer() {
-            public void initialize(final HttpRequest request) throws IOException {
-                request.setConnectTimeout(0);
-                request.setReadTimeout(0);
-                request.setParser(new GsonFactory().createJsonObjectParser());
-            }
-        });
-        String jsonString;
-        try {
-            HttpRequest request = factory.buildGetRequest(new GenericUrl(url));
-            HttpResponse response = request.execute();
-            jsonString = response.parseAsString();
-        } catch (IOException e) {
+            HttpClient httpClient = HttpClient.newHttpClient();
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .build();
+            HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            jsonString = httpResponse.body();
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
             jsonString = null;
         }
@@ -154,9 +153,7 @@ public class Marketdata {
 
     public static String HMAC_SHA256Encode(String secretKey, String message) {
 
-        SecretKeySpec keySpec = new SecretKeySpec(
-                secretKey.getBytes(),
-                "hmacSHA256");
+        SecretKeySpec keySpec = new SecretKeySpec(secretKey.getBytes(),"hmacSHA256");
 
         Mac mac = null;
         try {
