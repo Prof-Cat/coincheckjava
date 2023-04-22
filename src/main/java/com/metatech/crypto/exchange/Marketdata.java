@@ -57,9 +57,9 @@ public class Marketdata {
             Marketdata api = new Marketdata(exchCode, myConfigMap);
             // logger.info(api.getTicker());
             for ( int i=0; i<10; i++){
-                logger.info(api.targetExchange.exchangeName + ":" + api.targetExchange.coinPair  + ":" + api.getPublicTicker());
-//                logger.info(api.getPublicTrades());
-//                logger.info(api.getPublicOrderBooks());
+                logger.info("TargetExchange=" + exchCode + "::TargetPair=" + api.targetExchange.coinPair  + "::Type=ticker::" + api.getPublicTicker());
+                logger.info("TargetExchange=" + exchCode + "::TargetPair=" + api.targetExchange.coinPair  + "::Type=execution::" + api.getPublicTrades());
+                logger.info("TargetExchange=" + exchCode + "::TargetPair=" + api.targetExchange.coinPair  + "::Type=orderbook::" + api.getPublicOrderBooks());
                 Thread.sleep(1000);
             }
 
