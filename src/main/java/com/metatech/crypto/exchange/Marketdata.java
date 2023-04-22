@@ -57,10 +57,14 @@ public class Marketdata {
             Marketdata api = new Marketdata(exchCode, myConfigMap);
             // logger.info(api.getTicker());
             for ( int i=0; i<10; i++){
-                logger.info(api.getPublicTicker());
+                logger.info(api.targetExchange.exchangeName + ":" + api.targetExchange.coinPair  + ":" + api.getPublicTicker());
+//                logger.info(api.getPublicTrades());
+//                logger.info(api.getPublicOrderBooks());
                 Thread.sleep(1000);
             }
-            // logger.info(api.getPrivateBalance());
+
+            //logger.info(api.getPrivateBalance());
+            System.exit(0);
         } catch ( Exception e) {
             logger.error(e.toString());
         }
@@ -79,19 +83,19 @@ public class Marketdata {
     }
 
     public String getPublicTrades() {
-        String url = targetExchange.getBaseUrl() + "/trades"; 
+        String url = targetExchange.getBaseUrl() + "/trades?pair=" + targetExchange.getCoinPair(); 
         String jsonString = requestByPublicUrl(url);
         return jsonString;
     }
 
     public String getPublicOrderBooks() {
-        String url = targetExchange.getBaseUrl() + "/order_books"; 
+        String url = targetExchange.getBaseUrl() + "/order_books?pair=" + targetExchange.getCoinPair(); 
         String jsonString = requestByPublicUrl(url);
         return jsonString;
     }
 
     public String getPrivateTicker() {
-        String url = targetExchange.getBaseUrl() + "/account/ticker";
+        String url = targetExchange.getBaseUrl() + "/accounts/ticker?pair=" + targetExchange.getCoinPair();
         String jsonString = requestByUrlWithHeader(url);
         return jsonString;
     }

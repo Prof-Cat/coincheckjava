@@ -24,30 +24,22 @@ public class Configuration {
     private final String apiKey;
     private final String apiSecret;
     private final String baseUrl;
-    private final String exchangeName;
+    public final String exchangeName;
+    public final String coinPair;
 
-    private Configuration(String xApiKey, String xApiSecret, String xBaseUrl, String xName){
+    private Configuration(String xApiKey, String xApiSecret, String xBaseUrl, String xName, String xCoinPair){
         this.apiKey = xApiKey;
         this.apiSecret = xApiSecret;
         this.baseUrl = xBaseUrl;
         this.exchangeName = xName;
+        this.coinPair = xCoinPair;
     }
     
-    public String getApiKey(){
-        return this.apiKey;
-    }
-
-    public String getSecret(){
-        return this.apiSecret;
-    }
-
-    public String getBaseUrl(){
-        return this.baseUrl;
-    }
-
-    public String getExchangeName(){
-        return this.exchangeName;
-    }
+    public String getApiKey(){ return this.apiKey;}
+    public String getSecret(){return this.apiSecret;    }
+    public String getBaseUrl(){  return this.baseUrl; }
+    public String getExchangeName(){ return this.exchangeName; }
+    public String getCoinPair(){ return this.coinPair; }
 
     public static synchronized Map<String, Configuration> loadConfig(String configFile) throws IOException {
         if (configFile == null) {
@@ -88,13 +80,15 @@ public class Configuration {
             String apiKey = exchanges.getElementsByTagName("api_key").item(0).getTextContent();
             String apiSecret = exchanges.getElementsByTagName("api_secret").item(0).getTextContent();
             String exchangeName = exchanges.getElementsByTagName("exch_name").item(0).getTextContent();
+            String coinPair = exchanges.getElementsByTagName("coin_pair").item(0).getTextContent();
             
             logger.info("Exchange Name: " + exchangeName);
             logger.info("Base URL: " + baseUrl);
             logger.info("API Key: " + apiKey);
             logger.info("API Secret: " + apiSecret);
+            logger.info("Coin Pair:" + coinPair);
             logger.info("==============================");
-            Configuration xConfig = new Configuration(apiKey, apiSecret, baseUrl, exchangeName);
+            Configuration xConfig = new Configuration(apiKey, apiSecret, baseUrl, exchangeName, coinPair);
             CONFIGMAP.put(exchangeName, xConfig);   
 
             // Get the exchange information
@@ -103,29 +97,15 @@ public class Configuration {
             apiKey = exchanges.getElementsByTagName("api_key").item(0).getTextContent();
             apiSecret = exchanges.getElementsByTagName("api_secret").item(0).getTextContent();
             exchangeName = exchanges.getElementsByTagName("exch_name").item(0).getTextContent();
+            coinPair = exchanges.getElementsByTagName("coin_pair").item(0).getTextContent();
             logger.info("Exchange Name: " + exchangeName);
             logger.info("Base URL: " + baseUrl);
             logger.info("API Key: " + apiKey);
             logger.info("API Secret: " + apiSecret);
             logger.info("================================");
-            xConfig = new Configuration(apiKey, apiSecret, baseUrl, exchangeName);
+            xConfig = new Configuration(apiKey, apiSecret, baseUrl, exchangeName,coinPair);
             CONFIGMAP.put(exchangeName, xConfig);  
-            // NodeList exchangeList = exchanges.getElementsByTagName("*");
-            // System.out.println(exchangeList.getLength());
-            // for (int i = 0; i < exchangeList.getLength(); i++) {
-            //     Element exchange = (Element) exchangeList.item(i);
-            //     String baseUrl = exchange.getElementsByTagName("base_url").item(0).getTextContent();
-            //     String apiKey = exchange.getElementsByTagName("api_key").item(0).getTextContent();
-            //     String apiSecret = exchange.getElementsByTagName("api_secret").item(0).getTextContent();
-            //     String exchangeName = exchange.getElementsByTagName("exch_name").item(0).getTextContent();
-            //     System.out.println("Exchange Name: " + exchangeName);
-            //     System.out.println("Base URL: " + baseUrl);
-            //     System.out.println("API Key: " + apiKey);
-            //     System.out.println("API Secret: " + apiSecret);
-            //     System.out.println("");
-            //     Configuration xConfig = new Configuration(apiKey, apiSecret, baseUrl, exchangeName);
-            //     CONFIGMAP.put(exchangeName, xConfig);     
-            // }
+
             return CONFIGMAP;
         }
         catch ( Exception e) {
