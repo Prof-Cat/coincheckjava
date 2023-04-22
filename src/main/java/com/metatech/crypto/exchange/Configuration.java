@@ -84,8 +84,8 @@ public class Configuration {
             
             logger.info("Exchange Name: " + exchangeName);
             logger.info("Base URL: " + baseUrl);
-            logger.info("API Key: " + apiKey);
-            logger.info("API Secret: " + apiSecret);
+            //logger.info("API Key: " + apiKey);
+            //logger.info("API Secret: " + apiSecret);
             logger.info("Coin Pair:" + coinPair);
             logger.info("==============================");
             Configuration xConfig = new Configuration(apiKey, apiSecret, baseUrl, exchangeName, coinPair);
@@ -100,8 +100,8 @@ public class Configuration {
             coinPair = exchanges.getElementsByTagName("coin_pair").item(0).getTextContent();
             logger.info("Exchange Name: " + exchangeName);
             logger.info("Base URL: " + baseUrl);
-            logger.info("API Key: " + apiKey);
-            logger.info("API Secret: " + apiSecret);
+            //logger.info("API Key: " + apiKey);
+            //logger.info("API Secret: " + apiSecret);
             logger.info("================================");
             xConfig = new Configuration(apiKey, apiSecret, baseUrl, exchangeName,coinPair);
             CONFIGMAP.put(exchangeName, xConfig);  
