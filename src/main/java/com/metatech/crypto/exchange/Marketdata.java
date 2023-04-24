@@ -55,13 +55,21 @@ public class Marketdata {
             Map<String, Configuration> myConfigMap = Configuration.loadConfig(cfgFile);
 
             Marketdata api = new Marketdata(exchCode, myConfigMap);
-            // logger.info(api.getTicker());
-            for ( int i=0; i<10; i++){
-                logger.info("TargetExchange=" + exchCode + "::TargetPair=" + api.targetExchange.coinPair  + "::Type=ticker::" + api.getPublicTicker());
-                logger.info("TargetExchange=" + exchCode + "::TargetPair=" + api.targetExchange.coinPair  + "::Type=execution::" + api.getPublicTrades());
-                logger.info("TargetExchange=" + exchCode + "::TargetPair=" + api.targetExchange.coinPair  + "::Type=orderbook::" + api.getPublicOrderBooks());
-                Thread.sleep(1000);
-            }
+
+            // get account information by api key
+            logger.info(api.getAccountInfo());
+
+            // get account information by api key
+            logger.info(api.getAccountBalance());
+            logger.info(api.getAccountOrderList());
+
+            // // logger.info(api.getTicker());
+            // for ( int i=0; i<10; i++){
+            //     logger.info("TargetExchange=" + exchCode + "::TargetPair=" + api.targetExchange.coinPair  + "::Type=ticker::" + api.getPublicTicker());
+            //     logger.info("TargetExchange=" + exchCode + "::TargetPair=" + api.targetExchange.coinPair  + "::Type=execution::" + api.getPublicTrades());
+            //     logger.info("TargetExchange=" + exchCode + "::TargetPair=" + api.targetExchange.coinPair  + "::Type=orderbook::" + api.getPublicOrderBooks());
+            //     Thread.sleep(1000);
+            // }
 
             //logger.info(api.getPrivateBalance());
             System.exit(0);
@@ -100,8 +108,18 @@ public class Marketdata {
         return jsonString;
     }
 
-    public String getPrivateBalance() {
-        String jsonString = requestByUrlWithHeader(targetExchange.getBaseUrl());
+    public String getAccountBalance() {
+        String jsonString = requestByUrlWithHeader(targetExchange.getBaseUrl() + "/accounts/balance");
+        return jsonString;
+    }
+
+    public String getAccountInfo() {
+        String jsonString = requestByUrlWithHeader(targetExchange.getBaseUrl() + "/accounts");
+        return jsonString;
+    }
+
+    public String getAccountOrderList() {
+        String jsonString = requestByUrlWithHeader(targetExchange.getBaseUrl() + "/exchange/orders/opens");
         return jsonString;
     }
 
@@ -113,7 +131,7 @@ public class Marketdata {
                 .header("ACCESS-KEY", apiKey)
                 .header("ACCESS-NONCE", nonce)
                 .header("ACCESS-SIGNATURE", createSignature(nonce))
-                .GET()
+                //.GET()
                 .build();
     
         String jsonString;
