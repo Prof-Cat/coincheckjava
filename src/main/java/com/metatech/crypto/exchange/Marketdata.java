@@ -25,7 +25,7 @@ import java.util.Map;
 public class Marketdata {
     private String apiKey;
     private String apiSecret;
-    public static final String helpUsage = "MarketData -DCONFIG=<cfg file name> -DTARGET=<exchange code>\n\n";
+    public static final String helpUsage = "Marketdata -DCONFIG=<cfg file name> -DTARGET=<exchange code>\n\n";
  
     private static final Logger logger = Testslf4j.getLogger(Marketdata.class);
     public static Configuration targetExchange;
