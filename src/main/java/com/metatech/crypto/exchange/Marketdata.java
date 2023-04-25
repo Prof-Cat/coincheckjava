@@ -56,7 +56,7 @@ public class Marketdata {
 
             Marketdata api = new Marketdata(exchCode, myConfigMap);
             // logger.info(api.getTicker());
-            for ( int i=0; i<10; i++){
+            for ( int i=0; i<1; i++){
                 logger.info("TargetExchange=" + exchCode + "::TargetPair=" + api.targetExchange.coinPair  + "::Type=ticker::" + api.getPublicTicker());
                 logger.info("TargetExchange=" + exchCode + "::TargetPair=" + api.targetExchange.coinPair  + "::Type=execution::" + api.getPublicTrades());
                 logger.info("TargetExchange=" + exchCode + "::TargetPair=" + api.targetExchange.coinPair  + "::Type=orderbook::" + api.getPublicOrderBooks());
@@ -64,8 +64,8 @@ public class Marketdata {
             }
 
             logger.info(api.getAccountBalance());
-            logger.info(api.getAccountInfo());
-            logger.info(api.getAccountOrders());
+            //logger.info(api.getAccountInfo());
+            //logger.info(api.getAccountOrders());
             
             System.exit(0);
         } catch ( Exception e) {
@@ -104,23 +104,24 @@ public class Marketdata {
     }
 
     public String getAccountBalance() {
-        String url = targetExchange.getBaseUrl() + "/accounts/balance";
+        String url = targetExchange.getBaseUrl() + "accounts/balance";
         String jsonString = requestByUrlWithHeader(url);
         return jsonString;
     }
     public String getAccountInfo() {
-        String url = targetExchange.getBaseUrl() + "/accounts";
+        String url = targetExchange.getBaseUrl() + "accounts";
         String jsonString = requestByUrlWithHeader(url);
         return jsonString;
     }
     public String getAccountOrders() {
-        String url = targetExchange.getBaseUrl() + "/orders/opens";
+        String url = targetExchange.getBaseUrl() + "orders/opens";
         String jsonString = requestByUrlWithHeader(url);
         return jsonString;
     }
     private String requestByUrlWithHeader(String url){
         HttpClient client = HttpClient.newHttpClient();
         String nonce = createNonce();
+        logger.info("sending request to " + url);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .header("ACCESS-KEY", apiKey)
@@ -141,7 +142,7 @@ public class Marketdata {
     }
 
     private String createSignature(String nonce) {
-        String message = nonce + targetExchange.getBaseUrl();
+        String message = nonce;
         return HMAC_SHA256Encode(apiSecret, message);
     }
 

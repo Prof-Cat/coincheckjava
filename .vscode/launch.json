@@ -9,14 +9,15 @@
             "name": "Marketdata",
             "request": "launch",
             "mainClass": "com.metatech.crypto.exchange.Marketdata",
-            "projectName": "metatech-crypto-exchange"
+            "projectName": "coincheckjava",
+            "vmArgs": "-DCONFIG=./cnf/exchange.cnf.xml -DTARGET=coincheck"
         },
         {
             "type": "java",
             "name": "Launch Current File",
             "request": "launch",
             "mainClass": "${file}",
-            "args": "-DCONFIG='./cnf/exchange.cnf.xml' -DTARGET='coincheck'"
+            "vmArgs": "-DCONFIG=./cnf/exchange.cnf.xml -DTARGET=coincheck"
         },
         {
             "type": "java",
