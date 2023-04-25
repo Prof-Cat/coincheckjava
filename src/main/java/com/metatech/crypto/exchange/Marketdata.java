@@ -25,7 +25,7 @@ import java.util.Map;
 public class Marketdata {
     private String apiKey;
     private String apiSecret;
-    public static final String helpUsage = "MarketData -DCONFIG=<cfg file name> -DTARGET=<exchange code>\n\n";
+    public static final String helpUsage = "Marketdata -DCONFIG=<cfg file name> -DTARGET=<exchange code>\n\n";
  
     private static final Logger logger = Testslf4j.getLogger(Marketdata.class);
     public static Configuration targetExchange;
@@ -55,23 +55,18 @@ public class Marketdata {
             Map<String, Configuration> myConfigMap = Configuration.loadConfig(cfgFile);
 
             Marketdata api = new Marketdata(exchCode, myConfigMap);
+            // logger.info(api.getTicker());
+            for ( int i=0; i<10; i++){
+                logger.info("TargetExchange=" + exchCode + "::TargetPair=" + api.targetExchange.coinPair  + "::Type=ticker::" + api.getPublicTicker());
+                logger.info("TargetExchange=" + exchCode + "::TargetPair=" + api.targetExchange.coinPair  + "::Type=execution::" + api.getPublicTrades());
+                logger.info("TargetExchange=" + exchCode + "::TargetPair=" + api.targetExchange.coinPair  + "::Type=orderbook::" + api.getPublicOrderBooks());
+                Thread.sleep(1000);
+            }
 
-            // get account information by api key
-            logger.info(api.getAccountInfo());
-
-            // get account information by api key
             logger.info(api.getAccountBalance());
-            logger.info(api.getAccountOrderList());
-
-            // // logger.info(api.getTicker());
-            // for ( int i=0; i<10; i++){
-            //     logger.info("TargetExchange=" + exchCode + "::TargetPair=" + api.targetExchange.coinPair  + "::Type=ticker::" + api.getPublicTicker());
-            //     logger.info("TargetExchange=" + exchCode + "::TargetPair=" + api.targetExchange.coinPair  + "::Type=execution::" + api.getPublicTrades());
-            //     logger.info("TargetExchange=" + exchCode + "::TargetPair=" + api.targetExchange.coinPair  + "::Type=orderbook::" + api.getPublicOrderBooks());
-            //     Thread.sleep(1000);
-            // }
-
-            //logger.info(api.getPrivateBalance());
+            logger.info(api.getAccountInfo());
+            logger.info(api.getAccountOrders());
+            
             System.exit(0);
         } catch ( Exception e) {
             logger.error(e.toString());
@@ -109,20 +104,20 @@ public class Marketdata {
     }
 
     public String getAccountBalance() {
-        String jsonString = requestByUrlWithHeader(targetExchange.getBaseUrl() + "/accounts/balance");
+        String url = targetExchange.getBaseUrl() + "/accounts/balance";
+        String jsonString = requestByUrlWithHeader(url);
         return jsonString;
     }
-
     public String getAccountInfo() {
-        String jsonString = requestByUrlWithHeader(targetExchange.getBaseUrl() + "/accounts");
+        String url = targetExchange.getBaseUrl() + "/accounts";
+        String jsonString = requestByUrlWithHeader(url);
         return jsonString;
     }
-
-    public String getAccountOrderList() {
-        String jsonString = requestByUrlWithHeader(targetExchange.getBaseUrl() + "/exchange/orders/opens");
+    public String getAccountOrders() {
+        String url = targetExchange.getBaseUrl() + "/orders/opens";
+        String jsonString = requestByUrlWithHeader(url);
         return jsonString;
     }
-
     private String requestByUrlWithHeader(String url){
         HttpClient client = HttpClient.newHttpClient();
         String nonce = createNonce();
@@ -130,8 +125,8 @@ public class Marketdata {
                 .uri(URI.create(url))
                 .header("ACCESS-KEY", apiKey)
                 .header("ACCESS-NONCE", nonce)
-                .header("ACCESS-SIGNATURE", createSignature(nonce))
-                //.GET()
+                .header("ACCESS-SIGNATURE", createSignature(nonce + url))
+                .GET()
                 .build();
     
         String jsonString;

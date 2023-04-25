@@ -1,0 +1,16 @@
+2023-04-25 18:11:16.182 [main] INFO  - Hello, World from born!
+2023-04-25 18:15:46.533 [main] INFO  - Hello, World from born!
+2023-04-25 18:15:46.545 [main] INFO  - Exchange Name: coincheck
+2023-04-25 18:15:46.545 [main] INFO  - Base URL: http://coincheck.com/api/
+2023-04-25 18:15:46.545 [main] INFO  - Coin Pair:btc_jpy
+2023-04-25 18:15:46.546 [main] INFO  - ==============================
+2023-04-25 18:23:26.225 [main] INFO  - Hello, World from born!
+2023-04-25 18:23:26.232 [main] INFO  - Exchange Name: coincheck
+2023-04-25 18:23:26.232 [main] INFO  - Base URL: http://coincheck.com/api/
+2023-04-25 18:23:26.232 [main] INFO  - Coin Pair:btc_jpy
+2023-04-25 18:23:26.232 [main] INFO  - ==============================
+2023-04-25 18:23:35.324 [main] INFO  - Hello, World from born!
+2023-04-25 18:23:35.329 [main] INFO  - Exchange Name: coincheck
+2023-04-25 18:23:35.329 [main] INFO  - Base URL: http://coincheck.com/api/
+2023-04-25 18:23:35.329 [main] INFO  - Coin Pair:btc_jpy
+2023-04-25 18:23:35.330 [main] INFO  - ==============================

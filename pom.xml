@@ -5,7 +5,7 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.metatech.crypto-exchange</groupId>
+  <groupId>com.metatech.crypto.exchange</groupId>
   <artifactId>metatech-crypto-exchange</artifactId>
   <version>0.1</version>
 
