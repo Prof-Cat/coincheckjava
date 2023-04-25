@@ -63,7 +63,10 @@ public class Marketdata {
                 Thread.sleep(1000);
             }
 
-            //logger.info(api.getPrivateBalance());
+            logger.info(api.getAccountBalance());
+            logger.info(api.getAccountInfo());
+            logger.info(api.getAccountOrders());
+            
             System.exit(0);
         } catch ( Exception e) {
             logger.error(e.toString());
@@ -100,11 +103,21 @@ public class Marketdata {
         return jsonString;
     }
 
-    public String getPrivateBalance() {
-        String jsonString = requestByUrlWithHeader(targetExchange.getBaseUrl());
+    public String getAccountBalance() {
+        String url = targetExchange.getBaseUrl() + "/accounts/balance";
+        String jsonString = requestByUrlWithHeader(url);
         return jsonString;
     }
-
+    public String getAccountInfo() {
+        String url = targetExchange.getBaseUrl() + "/accounts";
+        String jsonString = requestByUrlWithHeader(url);
+        return jsonString;
+    }
+    public String getAccountOrders() {
+        String url = targetExchange.getBaseUrl() + "/orders/opens";
+        String jsonString = requestByUrlWithHeader(url);
+        return jsonString;
+    }
     private String requestByUrlWithHeader(String url){
         HttpClient client = HttpClient.newHttpClient();
         String nonce = createNonce();
@@ -112,7 +125,7 @@ public class Marketdata {
                 .uri(URI.create(url))
                 .header("ACCESS-KEY", apiKey)
                 .header("ACCESS-NONCE", nonce)
-                .header("ACCESS-SIGNATURE", createSignature(nonce))
+                .header("ACCESS-SIGNATURE", createSignature(nonce + url))
                 .GET()
                 .build();
     
