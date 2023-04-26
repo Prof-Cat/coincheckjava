@@ -26,9 +26,15 @@ public class Marketdata {
     private static final Logger logger = Testslf4j.getLogger(Marketdata.class);
 
     public Marketdata(String xExchange, Map<String, Configuration> theMap) {
-        targetExchange = theMap.get(xExchange);
-        apiKey = targetExchange.getApiKey();
-        apiSecret = targetExchange.getSecret();
+        try {
+            targetExchange = theMap.get(xExchange);
+            apiKey = targetExchange.getApiKey();
+            apiSecret = targetExchange.getSecret();
+            logger.info("Marketdata initialized with " + xExchange);
+        } catch (Exception e) {
+            logger.info("Marketdata initialization FAILED" + xExchange);
+            logger.error(xExchange, e);
+        }
     }
 
     public String getPublicTicker() {
