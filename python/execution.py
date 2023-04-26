@@ -9,7 +9,7 @@ orderbookdata = []
 
 # Regular expression pattern to match JSON data within a line
 matchJason = re.compile(r'{.*}')
-matchExchangePair = re.compile(r'TargetExchange=(.*?)::TargetPair=(.*?)::Type=(.*?)::')
+matchExchangePair = re.compile(r'Exchange=(.*?)::Pair=(.*?)::Type=(.*?)::')
 matchExecutions = re.compile(r'\"success\":true')
 
 with open('./logs/Testslf4j-20230422.log', 'r') as f:
