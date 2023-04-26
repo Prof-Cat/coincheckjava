@@ -17,62 +17,13 @@ import java.net.http.HttpResponse;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-// import java.util.HashMap;
 import java.util.Map;
 
 public class Marketdata {
     private String apiKey;
     private String apiSecret;
-    public static final String helpUsage = "Marketdata -DCONFIG=<cfg file name> -DTARGET=<exchange code>\n\n";
- 
-    private static final Logger logger = Testslf4j.getLogger(Marketdata.class);
     public static Configuration targetExchange;
-
-    public static void main(String[] args) {
-        
-        String exchCode = System.getProperty("TARGET");
-        String cfgFile = System.getProperty("CONFIG");
-
-        Properties props = System.getProperties();
-        props.list(System.out);
-        
-        Map<String, String> env = System.getenv();
-        for (String key : env.keySet()) {
-            System.out.println(key + ": " + env.get(key));
-        }
-        
-        if ( cfgFile == null ){
-            System.out.print( helpUsage);
-            System.exit(-1);
-        }
-        try {
-            // Load the log4j2.xml or log4j2.properties file
-            System.setProperty("current.date", new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date()));
-
-            logger.info("CONFIG: " + cfgFile);
-            Map<String, Configuration> myConfigMap = Configuration.loadConfig(cfgFile);
-
-            Marketdata api = new Marketdata(exchCode, myConfigMap);
-            // logger.info(api.getTicker());
-            for ( int i=0; i<1; i++){
-                logger.info("TargetExchange=" + exchCode + "::TargetPair=" + api.targetExchange.coinPair  + "::Type=ticker::" + api.getPublicTicker());
-                logger.info("TargetExchange=" + exchCode + "::TargetPair=" + api.targetExchange.coinPair  + "::Type=execution::" + api.getPublicTrades());
-                logger.info("TargetExchange=" + exchCode + "::TargetPair=" + api.targetExchange.coinPair  + "::Type=orderbook::" + api.getPublicOrderBooks());
-                Thread.sleep(1000);
-            }
-
-            logger.info(api.getAccountBalance());
-            logger.info(api.getAccountInfo());
-            logger.info(api.getAccountOrders());
-            logger.info(api.getTransactions());
-
-            System.exit(0);
-        } catch ( Exception e) {
-            logger.error(e.toString());
-        }
-    }
+    private static final Logger logger = Testslf4j.getLogger(Marketdata.class);
 
     public Marketdata(String xExchange, Map<String, Configuration> theMap) {
         targetExchange = theMap.get(xExchange);
