@@ -11,7 +11,7 @@ public class CryptoTrading {
 
     public static final String helpUsage = "CryptoTrading -DCONFIG=<cfg file name> -DTARGET=<exchange code>\n\n";
  
-    private static final Logger logger = Testslf4j.getLogger(Marketdata.class);
+    private static final Logger logger = Testslf4j.getLogger(CryptoTrading.class);
     public static Configuration targetExchange;
     public static void main(String[] args) {
         
@@ -21,10 +21,10 @@ public class CryptoTrading {
         Properties props = System.getProperties();
         props.list(System.out);
         
-        Map<String, String> env = System.getenv();
-        for (String key : env.keySet()) {
-            System.out.println(key + ": " + env.get(key));
-        }
+        //Map<String, String> env = System.getenv();
+        //for (String key : env.keySet()) {
+        //    System.out.println(key + ": " + env.get(key));
+        //}
         
         if ( cfgFile == null ){
             System.out.print( helpUsage);
@@ -47,7 +47,14 @@ public class CryptoTrading {
             }
 
             ExchangeAccount coinCheckAccount = new ExchangeAccount(exchCode, myConfigMap);
-            logger.info(coinCheckAccount.getAccountBalance());
+            logger.info(coinCheckAccount.getAccountInfo()); Thread.sleep(300);
+            logger.info(coinCheckAccount.getAccountBalance()); Thread.sleep(300);
+            logger.info(coinCheckAccount.toString()); Thread.sleep(300);
+
+            LineHandler coinCheckHandler = new LineHandler(exchCode, myConfigMap);
+            logger.info(coinCheckHandler.getOpenOrders());
+            logger.info(coinCheckHandler.getTransactions());
+            logger.info(coinCheckHandler.cancelOrderID("000001"));
 
             System.exit(0);
         } catch ( Exception e) {
