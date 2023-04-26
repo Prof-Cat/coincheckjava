@@ -17,66 +17,24 @@ import java.net.http.HttpResponse;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-// import java.util.HashMap;
 import java.util.Map;
 
 public class Marketdata {
     private String apiKey;
     private String apiSecret;
-    public static final String helpUsage = "Marketdata -DCONFIG=<cfg file name> -DTARGET=<exchange code>\n\n";
- 
-    private static final Logger logger = Testslf4j.getLogger(Marketdata.class);
     public static Configuration targetExchange;
-
-    public static void main(String[] args) {
-        
-        String exchCode = System.getProperty("TARGET");
-        String cfgFile = System.getProperty("CONFIG");
-
-        Properties props = System.getProperties();
-        props.list(System.out);
-        
-        Map<String, String> env = System.getenv();
-        for (String key : env.keySet()) {
-            System.out.println(key + ": " + env.get(key));
-        }
-        
-        if ( cfgFile == null ){
-            System.out.print( helpUsage);
-            System.exit(-1);
-        }
-        try {
-            // Load the log4j2.xml or log4j2.properties file
-            System.setProperty("current.date", new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date()));
-
-            logger.info("CONFIG: " + cfgFile);
-            Map<String, Configuration> myConfigMap = Configuration.loadConfig(cfgFile);
-
-            Marketdata api = new Marketdata(exchCode, myConfigMap);
-            // logger.info(api.getTicker());
-            for ( int i=0; i<1; i++){
-                logger.info("TargetExchange=" + exchCode + "::TargetPair=" + api.targetExchange.coinPair  + "::Type=ticker::" + api.getPublicTicker());
-                logger.info("TargetExchange=" + exchCode + "::TargetPair=" + api.targetExchange.coinPair  + "::Type=execution::" + api.getPublicTrades());
-                logger.info("TargetExchange=" + exchCode + "::TargetPair=" + api.targetExchange.coinPair  + "::Type=orderbook::" + api.getPublicOrderBooks());
-                Thread.sleep(1000);
-            }
-
-            logger.info(api.getAccountBalance());
-            //logger.info(api.getAccountInfo());
-            //logger.info(api.getAccountOrders());
-            
-            System.exit(0);
-        } catch ( Exception e) {
-            logger.error(e.toString());
-        }
-    }
+    private static final Logger logger = Testslf4j.getLogger(Marketdata.class);
 
     public Marketdata(String xExchange, Map<String, Configuration> theMap) {
-        targetExchange = theMap.get(xExchange);
-        apiKey = targetExchange.getApiKey();
-        apiSecret = targetExchange.getSecret();
+        try {
+            targetExchange = theMap.get(xExchange);
+            apiKey = targetExchange.getApiKey();
+            apiSecret = targetExchange.getSecret();
+            logger.info("Marketdata initialized with " + xExchange);
+        } catch (Exception e) {
+            logger.info("Marketdata initialization FAILED" + xExchange);
+            logger.error(xExchange, e);
+        }
     }
 
     public String getPublicTicker() {
@@ -103,21 +61,44 @@ public class Marketdata {
         return jsonString;
     }
 
+    // GET /api/accounts/balance
     public String getAccountBalance() {
         String url = targetExchange.getBaseUrl() + "accounts/balance";
         String jsonString = requestByUrlWithHeader(url);
         return jsonString;
     }
+
+    // GET /api/accounts
     public String getAccountInfo() {
         String url = targetExchange.getBaseUrl() + "accounts";
         String jsonString = requestByUrlWithHeader(url);
         return jsonString;
     }
+
+    // GET /api/exchange/orders/opens
     public String getAccountOrders() {
-        String url = targetExchange.getBaseUrl() + "orders/opens";
+        String url = targetExchange.getBaseUrl() + "exchange/orders/opens";
         String jsonString = requestByUrlWithHeader(url);
         return jsonString;
     }
+
+    // GET /api/exchange/orders/transactions_pagination
+    public String getTransactionPages() {
+        String url = targetExchange.getBaseUrl() + "exchange/orders/transactions_pagination";
+        String jsonString = requestByUrlWithHeader(url);
+        return jsonString;
+    }
+
+    // Cancel <id> : DELETE /api/exchange/orders/<id>
+    // Request <id> cancel status : GET /api/exchange/orders/cancel_status?id=[id]
+
+    // GET /api/exchange/orders/transactions
+    public String getTransactions() {
+        String url = targetExchange.getBaseUrl() + "exchange/orders/transactions";
+        String jsonString = requestByUrlWithHeader(url);
+        return jsonString;
+    }
+
     private String requestByUrlWithHeader(String url){
         HttpClient client = HttpClient.newHttpClient();
         String nonce = createNonce();
@@ -130,6 +111,9 @@ public class Marketdata {
                 .GET()
                 .build();
     
+        // {'ACCESS-KEY': 'yourapi-key', 'ACCESS-NONCE': '1682422247275682048', 'ACCESS-SIGNATURE': 'the signed message'}
+        // send : https://coincheck.com/api/accounts/balance
+
         String jsonString;
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -147,7 +131,7 @@ public class Marketdata {
     }
 
     private String createNonce() {
-        long currentUnixTime = System.currentTimeMillis() / 1000L;
+        long currentUnixTime = System.currentTimeMillis();
         String nonce = String.valueOf(currentUnixTime);
         return nonce;
     }
