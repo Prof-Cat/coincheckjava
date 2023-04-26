@@ -64,9 +64,10 @@ public class Marketdata {
             }
 
             logger.info(api.getAccountBalance());
-            //logger.info(api.getAccountInfo());
-            //logger.info(api.getAccountOrders());
-            
+            logger.info(api.getAccountInfo());
+            logger.info(api.getAccountOrders());
+            logger.info(api.getTransactions());
+
             System.exit(0);
         } catch ( Exception e) {
             logger.error(e.toString());
@@ -103,21 +104,44 @@ public class Marketdata {
         return jsonString;
     }
 
+    // GET /api/accounts/balance
     public String getAccountBalance() {
         String url = targetExchange.getBaseUrl() + "accounts/balance";
         String jsonString = requestByUrlWithHeader(url);
         return jsonString;
     }
+
+    // GET /api/accounts
     public String getAccountInfo() {
         String url = targetExchange.getBaseUrl() + "accounts";
         String jsonString = requestByUrlWithHeader(url);
         return jsonString;
     }
+
+    // GET /api/exchange/orders/opens
     public String getAccountOrders() {
-        String url = targetExchange.getBaseUrl() + "orders/opens";
+        String url = targetExchange.getBaseUrl() + "exchange/orders/opens";
         String jsonString = requestByUrlWithHeader(url);
         return jsonString;
     }
+
+    // GET /api/exchange/orders/transactions_pagination
+    public String getTransactionPages() {
+        String url = targetExchange.getBaseUrl() + "exchange/orders/transactions_pagination";
+        String jsonString = requestByUrlWithHeader(url);
+        return jsonString;
+    }
+
+    // Cancel <id> : DELETE /api/exchange/orders/<id>
+    // Request <id> cancel status : GET /api/exchange/orders/cancel_status?id=[id]
+
+    // GET /api/exchange/orders/transactions
+    public String getTransactions() {
+        String url = targetExchange.getBaseUrl() + "exchange/orders/transactions";
+        String jsonString = requestByUrlWithHeader(url);
+        return jsonString;
+    }
+
     private String requestByUrlWithHeader(String url){
         HttpClient client = HttpClient.newHttpClient();
         String nonce = createNonce();
@@ -130,6 +154,9 @@ public class Marketdata {
                 .GET()
                 .build();
     
+        // {'ACCESS-KEY': 'yourapi-key', 'ACCESS-NONCE': '1682422247275682048', 'ACCESS-SIGNATURE': 'the signed message'}
+        // send : https://coincheck.com/api/accounts/balance
+
         String jsonString;
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -147,7 +174,7 @@ public class Marketdata {
     }
 
     private String createNonce() {
-        long currentUnixTime = System.currentTimeMillis() / 1000L;
+        long currentUnixTime = System.currentTimeMillis();
         String nonce = String.valueOf(currentUnixTime);
         return nonce;
     }
