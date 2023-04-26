@@ -46,6 +46,9 @@ public class CryptoTrading {
                 Thread.sleep(1000);
             }
 
+            ExchangeAccount coinCheckAccount = new ExchangeAccount(exchCode, myConfigMap);
+            logger.info(coinCheckAccount.getAccountBalance());
+
             System.exit(0);
         } catch ( Exception e) {
             logger.error(e.toString());
