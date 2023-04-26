@@ -24,4 +24,40 @@ public class LineHandler {
             logger.error(xExchange, e);
         }
     }
+
+        // GET /api/exchange/orders/opens
+        public String getOpenOrders() {
+            String url = targetExchange.getBaseUrl() + "exchange/orders/opens";
+            String jsonString = Util.requestByUrlWithHeader(url, apiKey, apiSecret);
+            return jsonString;
+        }
+    
+        // GET /api/exchange/orders/transactions_pagination
+        public String getTransactionPages() {
+            String url = targetExchange.getBaseUrl() + "exchange/orders/transactions_pagination";
+            String jsonString = Util.requestByUrlWithHeader(url, apiKey, apiSecret); // requestByUrlWithHeader(url);
+            return jsonString;
+        }
+    
+        // Cancel <id> : DELETE /api/exchange/orders/<id>
+        public String cancelOrderID( String xId) {
+            String url = targetExchange.getBaseUrl() + "exchange/orders/" + xId;
+            String jsonString = Util.deleteByUrlWithHeader(url, apiKey, apiSecret); // requestByUrlWithHeader(url);
+            return jsonString;
+        }
+
+        // Request <id> cancel status : GET /api/exchange/orders/cancel_status?id=[id]
+        public String getCancelStatus( String xId) {
+            String url = targetExchange.getBaseUrl() + "exchange/orders/cancel_status?" + xId;
+            String jsonString = Util.requestByUrlWithHeader(url, apiKey, apiSecret); // requestByUrlWithHeader(url);
+            return jsonString;
+        }
+        
+        // GET /api/exchange/orders/transactions
+        public String getTransactions() {
+            String url = targetExchange.getBaseUrl() + "exchange/orders/transactions";
+            String jsonString = Util.requestByUrlWithHeader(url, apiKey, apiSecret); // requestByUrlWithHeader(url);
+            return jsonString;
+        }
+    
 }
