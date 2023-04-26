@@ -6,9 +6,9 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Marketdata",
+            "name": "CryptoTrading",
             "request": "launch",
-            "mainClass": "com.metatech.crypto.exchange.Marketdata",
+            "mainClass": "com.metatech.crypto.exchange.CryptoTrading",
             "projectName": "coincheckjava",
             "vmArgs": "-DCONFIG=./cnf/exchange.cnf.xml -DTARGET=coincheck"
         },
@@ -18,13 +18,6 @@
             "request": "launch",
             "mainClass": "${file}",
             "vmArgs": "-DCONFIG=./cnf/exchange.cnf.xml -DTARGET=coincheck"
-        },
-        {
-            "type": "java",
-            "name": "Java with Arguments Prompt",
-            "request": "launch",
-            "mainClass": "com.metatech.JavaCat.Marketdata",
-            "args": "${command:SpecifyProgramArgs}"
         },
         {
             "name": "Python: Current File",
