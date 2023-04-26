@@ -48,6 +48,32 @@ public class Util {
         return jsonString;
     }
 
+    public static String deleteByUrlWithHeader(String url, String apiKey, String apiSecret){
+        HttpClient client = HttpClient.newHttpClient();
+        String nonce = Util.createNonce();
+        // logger.info("sending request to " + url);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .header("ACCESS-KEY", apiKey)
+                .header("ACCESS-NONCE", nonce)
+                .header("ACCESS-SIGNATURE", Util.createSignature(nonce + url, apiSecret))
+                .DELETE()
+                .build();
+
+        // {'ACCESS-KEY': 'yourapi-key', 'ACCESS-NONCE': '1682422247275682048', 'ACCESS-SIGNATURE': 'the signed message'}
+        // send : https://coincheck.com/api/exchange/orders/<id>
+
+        String jsonString;
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            jsonString = response.body();
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            jsonString = null;
+        }
+        return jsonString;
+    }
+
     public static String createSignature(String nonce, String apiSecret) {
         return HMAC_SHA256Encode(apiSecret, nonce);
     }
@@ -58,7 +84,7 @@ public class Util {
         return nonce;
     }
 
-    public String requestByPublicUrl(String url) {
+    public static String requestByPublicUrl(String url) {
         String jsonString;
         //logger.info(url);
         try {
