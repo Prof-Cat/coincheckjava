@@ -12,7 +12,7 @@ public class CryptoTrading {
     public static final String helpUsage = "CryptoTrading -DCONFIG=<cfg file name> -DTARGET=<exchange code>\n\n";
  
     private static final Logger logger = Testslf4j.getLogger(CryptoTrading.class);
-    public static Configuration targetExchange;
+    public static ExchangeX targetExchange;
     public static void main(String[] args) {
         
         String exchCode = System.getProperty("TARGET");
@@ -35,7 +35,7 @@ public class CryptoTrading {
             System.setProperty("current.date", new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date()));
 
             logger.info("CONFIG: " + cfgFile);
-            Map<String, Configuration> myConfigMap = Configuration.loadConfig(cfgFile);
+            Map<String, ExchangeX> myConfigMap = Configuration.loadConfig(cfgFile);
 
             Marketdata execMarketData = new Marketdata(exchCode, myConfigMap);
             // logger.info(api.getTicker());
