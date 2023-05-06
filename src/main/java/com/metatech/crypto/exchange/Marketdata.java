@@ -38,7 +38,7 @@ public class Marketdata {
     }
 
     public String getPublicTicker() {
-        String url = targetExchange.getBaseUrl() + "/ticker"; 
+        String url = targetExchange.getBaseUrl() + "/ticker?pair=" + targetExchange.getCoinPair(); 
         String jsonString = Util.requestByPublicUrl(url);
         return jsonString;
     }
