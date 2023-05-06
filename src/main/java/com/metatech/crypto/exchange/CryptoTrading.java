@@ -6,6 +6,10 @@ import java.util.Properties;
 import java.util.Map;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 
 public class CryptoTrading {
 
@@ -59,7 +63,54 @@ public class CryptoTrading {
             LineHandler coinCheckHandler = new LineHandler(exchCode, myConfigMap);
             logger.info(Util.headerString(exchCode, xCoinPair, "OpenOrders") + coinCheckHandler.getOpenOrders());
             logger.info(Util.headerString(exchCode, xCoinPair, "Transactions") + coinCheckHandler.getTransactions());
-            logger.info(Util.headerString(exchCode, xCoinPair, "CancelOrder") + coinCheckHandler.cancelOrderID("000001"));
+            // logger.info(Util.headerString(exchCode, xCoinPair, "CancelOrder") + coinCheckHandler.cancelOrderID("000001"));
+
+            // Send new test order
+            // will use CryptoOrder class later
+            String testOrder = coinCheckHandler.newOrder(0.20, 3000, xCoinPair, CoinCheckOrderType.LIMTTBUY);
+
+            // assume response is the JSON string
+            JSONObject testOrderResponseJson = new JSONObject(testOrder);
+
+            if (testOrderResponseJson.getBoolean("success")) {
+                String myOrderID = testOrderResponseJson.getString("id");
+                logger.info(Util.headerString(exchCode, xCoinPair, "CancelOrder") + coinCheckHandler.cancelOrderID(myOrderID));
+            } else {
+                logger.info(testOrderResponseJson.toString());
+            }
+
+            // cancel all open orders
+            String openOrdersJson = coinCheckHandler.getOpenOrders();
+            JSONObject openOrderResponseJson = new JSONObject(openOrdersJson);
+            if (openOrderResponseJson.getBoolean("success")) {
+                JSONArray ordersJson = openOrderResponseJson.getJSONArray("orders");
+                for (int i = 0; i < ordersJson.length(); i++) {
+                    JSONObject orderJson = ordersJson.getJSONObject(i);
+                    Long orderId = (Long) orderJson.get("id");
+                    logger.info(Util.headerString(exchCode, xCoinPair, "CancelOrder") + coinCheckHandler.cancelOrderID(orderId));
+                }
+            } else {
+                logger.info(testOrderResponseJson.toString());
+            }
+
+            logger.info(Util.headerString(exchCode, xCoinPair, "OpenOrders") + coinCheckHandler.getOpenOrders());
+
+            // ObjectMapper testOrderMapper = new ObjectMapper();
+            // Map<String, Object> testOrderMap = testOrderMapper.readValue(testOrder, Map.class);
+
+            // if( (boolean) testOrderMap.get("success") ) {
+            //     String myOrderID = (String) testOrderMap.get("id");
+            //     logger.info(Util.headerString(exchCode, xCoinPair, "CancelOrder") + coinCheckHandler.cancelOrderID(myOrderID));
+            // } else {
+            //     logger.info(testOrderMap.toString());
+            // }
+            // Map<String, Object> openOrderMap = testOrderMapper.readValue(openOrdersJson, Map.class);
+            // if( (boolean) testOrderMap.get("success") ) {
+            //     String myOrderID = (String) testOrderMap.get("id");
+            //     logger.info(Util.headerString(exchCode, xCoinPair, "CancelOrder") + coinCheckHandler.cancelOrderID(myOrderID));
+            // } else {
+            //     logger.info(testOrderMap.toString());
+            // }
 
             System.exit(0);
         } catch ( Exception e) {
