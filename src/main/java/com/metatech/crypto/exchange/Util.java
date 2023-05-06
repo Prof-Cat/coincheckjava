@@ -14,7 +14,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-
+import java.net.http.HttpRequest.BodyPublisher;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
@@ -82,6 +83,32 @@ public class Util {
                 .header("ACCESS-NONCE", nonce)
                 .header("ACCESS-SIGNATURE", Util.createSignature(nonce + url, apiSecret))
                 .DELETE()
+                .build();
+
+        // {'ACCESS-KEY': 'yourapi-key', 'ACCESS-NONCE': '1682422247275682048', 'ACCESS-SIGNATURE': 'the signed message'}
+        // send : https://coincheck.com/api/exchange/orders/<id>
+
+        String jsonString;
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            jsonString = response.body();
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            jsonString = null;
+        }
+        return jsonString;
+    }
+
+    public static String postByUrlWithHeader(String url, String apiKey, String apiSecret, String xBody){
+        HttpClient client = HttpClient.newHttpClient();
+        String nonce = Util.createNonce();
+        // logger.info("sending request to " + url);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .header("ACCESS-KEY", apiKey)
+                .header("ACCESS-NONCE", nonce)
+                .header("ACCESS-SIGNATURE", Util.createSignature(nonce + url, apiSecret))
+                .POST(HttpRequest.BodyPublishers.ofString(xBody,StandardCharsets.UTF_8 ))
                 .build();
 
         // {'ACCESS-KEY': 'yourapi-key', 'ACCESS-NONCE': '1682422247275682048', 'ACCESS-SIGNATURE': 'the signed message'}
