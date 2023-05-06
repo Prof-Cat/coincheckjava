@@ -48,6 +48,30 @@ public class Util {
         return jsonString;
     }
 
+    public static String requestByUrlWithHeaderParameters(String url, String apiKey){
+        HttpClient client = HttpClient.newHttpClient();
+        // cmc-v2quotes.sh:curl -XGET -H'content-type: application/json' 
+        // -H'x-cmc_pro_api_key: b2ca43e6-ea9d-4140-8642-c300a2045095' 
+        // -d 'id=1&convert=USD' -G https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest
+        
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .header("x-cmc_pro_api_key", apiKey)
+                .header("content-type", "application/json")
+                .GET()
+                .build();
+
+        String jsonString;
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            jsonString = response.body();
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            jsonString = null;
+        }
+        return jsonString;
+    }
+
     public static String deleteByUrlWithHeader(String url, String apiKey, String apiSecret){
         HttpClient client = HttpClient.newHttpClient();
         String nonce = Util.createNonce();
@@ -121,5 +145,9 @@ public class Util {
         }
         byte[] rawHmac = mac.doFinal(message.getBytes());
         return Hex.encodeHexString(rawHmac);
+    }
+
+    public static String headerString( String xExchange, String xCoinPair, String xDataType){
+        return "Exchange::" + xExchange + "::CoinPair::" + xCoinPair + "::DataType::" + xDataType;
     }
 }

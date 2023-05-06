@@ -22,10 +22,10 @@ import java.util.Map;
 public class ExchangeAccount {
     private String apiKey;
     private String apiSecret;
-    public static Configuration targetExchange;
+    public static ExchangeX targetExchange;
     private static final Logger logger = Testslf4j.getLogger(ExchangeAccount.class);
 
-    public ExchangeAccount(String xExchange, Map<String, Configuration> theMap) {
+    public ExchangeAccount(String xExchange, Map<String, ExchangeX> theMap) {
         try {
             targetExchange = theMap.get(xExchange);
             apiKey = targetExchange.getApiKey();

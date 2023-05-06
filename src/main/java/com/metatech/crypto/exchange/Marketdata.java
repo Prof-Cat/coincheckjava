@@ -22,10 +22,10 @@ import java.util.Map;
 public class Marketdata {
     private String apiKey;
     private String apiSecret;
-    public static Configuration targetExchange;
+    public static ExchangeX targetExchange;
     private static final Logger logger = Testslf4j.getLogger(Marketdata.class);
 
-    public Marketdata(String xExchange, Map<String, Configuration> theMap) {
+    public Marketdata(String xExchange, Map<String, ExchangeX> theMap) {
         try {
             targetExchange = theMap.get(xExchange);
             apiKey = targetExchange.getApiKey();
@@ -38,7 +38,7 @@ public class Marketdata {
     }
 
     public String getPublicTicker() {
-        String url = targetExchange.getBaseUrl() + "/ticker"; 
+        String url = targetExchange.getBaseUrl() + "/ticker?pair=" + targetExchange.getCoinPair(); 
         String jsonString = Util.requestByPublicUrl(url);
         return jsonString;
     }

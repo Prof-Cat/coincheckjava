@@ -12,7 +12,7 @@ public class CryptoTrading {
     public static final String helpUsage = "CryptoTrading -DCONFIG=<cfg file name> -DTARGET=<exchange code>\n\n";
  
     private static final Logger logger = Testslf4j.getLogger(CryptoTrading.class);
-    public static Configuration targetExchange;
+    public static ExchangeX targetExchange;
     public static void main(String[] args) {
         
         String exchCode = System.getProperty("TARGET");
@@ -35,26 +35,31 @@ public class CryptoTrading {
             System.setProperty("current.date", new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date()));
 
             logger.info("CONFIG: " + cfgFile);
-            Map<String, Configuration> myConfigMap = Configuration.loadConfig(cfgFile);
+            Map<String, ExchangeX> myConfigMap = Configuration.loadConfig(cfgFile);
+            
+            String myClassPath = System.getProperty("java.class.path");
+            logger.info(myClassPath);
 
             Marketdata execMarketData = new Marketdata(exchCode, myConfigMap);
+            String xCoinPair = execMarketData.targetExchange.coinPair;
+
             // logger.info(api.getTicker());
             for ( int i=0; i<1; i++){
-                logger.info("Exchange=" + exchCode + "::Pair=" + execMarketData.targetExchange.coinPair  + "::Type=ticker::" + execMarketData.getPublicTicker());
-                logger.info("Exchange=" + exchCode + "::Pair=" + execMarketData.targetExchange.coinPair  + "::Type=execution::" + execMarketData.getPublicTrades());
-                logger.info("Exchange=" + exchCode + "::Pair=" + execMarketData.targetExchange.coinPair  + "::Type=orderbook::" + execMarketData.getPublicOrderBooks());
+                logger.info("Exchange=" + exchCode + "::Pair=" + xCoinPair  + "::Type=ticker::" + execMarketData.getPublicTicker());
+                logger.info("Exchange=" + exchCode + "::Pair=" + xCoinPair  + "::Type=trades::" + execMarketData.getPublicTrades());
+                logger.info("Exchange=" + exchCode + "::Pair=" + xCoinPair  + "::Type=orderbook::" + execMarketData.getPublicOrderBooks());
                 Thread.sleep(1000);
             }
 
             ExchangeAccount coinCheckAccount = new ExchangeAccount(exchCode, myConfigMap);
-            logger.info(coinCheckAccount.getAccountInfo()); Thread.sleep(300);
-            logger.info(coinCheckAccount.getAccountBalance()); Thread.sleep(300);
-            logger.info(coinCheckAccount.toString()); Thread.sleep(300);
+            logger.info(Util.headerString(exchCode, xCoinPair, "AccountInfo") + coinCheckAccount.getAccountInfo()); Thread.sleep(300);
+            logger.info(Util.headerString(exchCode, xCoinPair, "AccountBalance") + coinCheckAccount.getAccountBalance()); Thread.sleep(300);
+            Thread.sleep(300);
 
             LineHandler coinCheckHandler = new LineHandler(exchCode, myConfigMap);
-            logger.info(coinCheckHandler.getOpenOrders());
-            logger.info(coinCheckHandler.getTransactions());
-            logger.info(coinCheckHandler.cancelOrderID("000001"));
+            logger.info(Util.headerString(exchCode, xCoinPair, "OpenOrders") + coinCheckHandler.getOpenOrders());
+            logger.info(Util.headerString(exchCode, xCoinPair, "Transactions") + coinCheckHandler.getTransactions());
+            logger.info(Util.headerString(exchCode, xCoinPair, "CancelOrder") + coinCheckHandler.cancelOrderID("000001"));
 
             System.exit(0);
         } catch ( Exception e) {

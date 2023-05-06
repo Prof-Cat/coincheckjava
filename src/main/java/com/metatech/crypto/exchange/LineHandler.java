@@ -10,10 +10,10 @@ import java.util.Date;
 public class LineHandler {
     private String apiKey;
     private String apiSecret;
-    public static Configuration targetExchange;
+    public static ExchangeX targetExchange;
     private static final Logger logger = Testslf4j.getLogger(LineHandler.class);
 
-    public LineHandler(String xExchange, Map<String, Configuration> theMap) {
+    public LineHandler(String xExchange, Map<String, ExchangeX> theMap) {
         try {
             targetExchange = theMap.get(xExchange);
             apiKey = targetExchange.getApiKey();
