@@ -2,10 +2,7 @@ package com.metatech.crypto.exchange;
 
 import com.metatech.JavaCat.Testslf4j;
 import org.slf4j.Logger;
-import java.util.Properties;
 import java.util.Map;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class LineHandler {
     private String apiKey;
@@ -39,6 +36,27 @@ public class LineHandler {
             return jsonString;
         }
     
+        // Send new order via exchenga/orders
+        // HTTP REQUEST :: POST /api/exchange/orders
+        // PARAMETERS
+        // *pair取引ペア。現在は btc_jpy, etc_jpy, lsk_jpy, mona_jpy, omg_jpy, plt_jpy, fnct_jpyが利用可能です。
+        // *order_type注文方法
+        // rate注文のレート。（例）28000
+        // amount注文での量。（例）0.1
+        // market_buy_amount成行買で利用する日本円の金額。（例）10000
+        // stop_loss_rate逆指値レート ( 逆指値とは？ )
+        // time_in_force注文有効期間(optional)。
+        // "good_til_cancelled"(キャンセルされるまで有効。デフォルト) 
+        // あるいは "post_only"( postonlyとは？ )が指定できます。
+        public String newOrder( double xPrice, double xQty, String xCoinPair, CoinCheckOrderType xOrderType ){
+            String jsonString;
+            // order price check, and qty check, etc should pass before reaching here
+            String url = targetExchange.getBaseUrl() + "exchange/orders";
+            String bodyNewOrder = "{\"rate\":" + xPrice + ",\"amount\":" + xQty + ",\"order_type\":\"" + xOrderType.getValue() + "\",\"pair\":\"" + xCoinPair + "\"}";
+            jsonString = Util.postByUrlWithHeader(url, apiKey, apiSecret, bodyNewOrder);
+            return jsonString;
+        }
+
         // Cancel <id> : DELETE /api/exchange/orders/<id>
         public String cancelOrderID( String xId) {
             String url = targetExchange.getBaseUrl() + "exchange/orders/" + xId;
@@ -46,6 +64,13 @@ public class LineHandler {
             return jsonString;
         }
 
+        // Cancel <id> : DELETE /api/exchange/orders/<id>
+        public String cancelOrderID( Long xId) {
+            String url = targetExchange.getBaseUrl() + "exchange/orders/" + xId;
+            String jsonString = Util.deleteByUrlWithHeader(url, apiKey, apiSecret); // requestByUrlWithHeader(url);
+            return jsonString;
+        }
+        
         // Request <id> cancel status : GET /api/exchange/orders/cancel_status?id=[id]
         public String getCancelStatus( String xId) {
             String url = targetExchange.getBaseUrl() + "exchange/orders/cancel_status?" + xId;
