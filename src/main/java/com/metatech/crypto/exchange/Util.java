@@ -146,4 +146,8 @@ public class Util {
         byte[] rawHmac = mac.doFinal(message.getBytes());
         return Hex.encodeHexString(rawHmac);
     }
+
+    public static String headerString( String xExchange, String xCoinPair, String xDataType){
+        return "Exchange::" + xExchange + "::CoinPair::" + xCoinPair + "::DataType::" + xDataType;
+    }
 }
