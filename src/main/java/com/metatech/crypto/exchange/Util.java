@@ -117,6 +117,8 @@ public class Util {
         String jsonString;
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println(response.statusCode());
+            System.out.println(response.body());
             jsonString = response.body();
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
@@ -176,5 +178,9 @@ public class Util {
 
     public static String headerString( String xExchange, String xCoinPair, String xDataType){
         return "Exchange::" + xExchange + "::CoinPair::" + xCoinPair + "::DataType::" + xDataType;
+    }
+
+    public static String generateNextClOrdID(){
+        return "testOrderID";   // to be thread safe sequencial formated string
     }
 }

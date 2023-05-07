@@ -47,23 +47,23 @@ public class CryptoTrading {
             Marketdata execMarketData = new Marketdata(exchCode, myConfigMap);
             String xCoinPair = execMarketData.targetExchange.coinPair;
 
-            // logger.info(api.getTicker());
-            for ( int i=0; i<1; i++){
-                logger.info("Exchange=" + exchCode + "::Pair=" + xCoinPair  + "::Type=ticker::" + execMarketData.getPublicTicker());
-                logger.info("Exchange=" + exchCode + "::Pair=" + xCoinPair  + "::Type=trades::" + execMarketData.getPublicTrades());
-                logger.info("Exchange=" + exchCode + "::Pair=" + xCoinPair  + "::Type=orderbook::" + execMarketData.getPublicOrderBooks());
-                Thread.sleep(1000);
-            }
+            // // logger.info(api.getTicker());
+            // for ( int i=0; i<1; i++){
+            //     logger.info("Exchange=" + exchCode + "::Pair=" + xCoinPair  + "::Type=ticker::" + execMarketData.getPublicTicker());
+            //     logger.info("Exchange=" + exchCode + "::Pair=" + xCoinPair  + "::Type=trades::" + execMarketData.getPublicTrades());
+            //     logger.info("Exchange=" + exchCode + "::Pair=" + xCoinPair  + "::Type=orderbook::" + execMarketData.getPublicOrderBooks());
+            //     Thread.sleep(1000);
+            // }
 
-            ExchangeAccount coinCheckAccount = new ExchangeAccount(exchCode, myConfigMap);
-            logger.info(Util.headerString(exchCode, xCoinPair, "AccountInfo") + coinCheckAccount.getAccountInfo()); Thread.sleep(300);
-            logger.info(Util.headerString(exchCode, xCoinPair, "AccountBalance") + coinCheckAccount.getAccountBalance()); Thread.sleep(300);
-            Thread.sleep(300);
+            // ExchangeAccount coinCheckAccount = new ExchangeAccount(exchCode, myConfigMap);
+            // logger.info(Util.headerString(exchCode, xCoinPair, "AccountInfo") + coinCheckAccount.getAccountInfo()); Thread.sleep(300);
+            // logger.info(Util.headerString(exchCode, xCoinPair, "AccountBalance") + coinCheckAccount.getAccountBalance()); Thread.sleep(300);
+            // Thread.sleep(300);
 
             LineHandler coinCheckHandler = new LineHandler(exchCode, myConfigMap);
-            logger.info(Util.headerString(exchCode, xCoinPair, "OpenOrders") + coinCheckHandler.getOpenOrders());
-            logger.info(Util.headerString(exchCode, xCoinPair, "Transactions") + coinCheckHandler.getTransactions());
-            // logger.info(Util.headerString(exchCode, xCoinPair, "CancelOrder") + coinCheckHandler.cancelOrderID("000001"));
+            // logger.info(Util.headerString(exchCode, xCoinPair, "OpenOrders") + coinCheckHandler.getOpenOrders());
+            // logger.info(Util.headerString(exchCode, xCoinPair, "Transactions") + coinCheckHandler.getTransactions());
+            // // logger.info(Util.headerString(exchCode, xCoinPair, "CancelOrder") + coinCheckHandler.cancelOrderID("000001"));
 
             // Send new test order
             // will use CryptoOrder class later
@@ -94,23 +94,6 @@ public class CryptoTrading {
             }
 
             logger.info(Util.headerString(exchCode, xCoinPair, "OpenOrders") + coinCheckHandler.getOpenOrders());
-
-            // ObjectMapper testOrderMapper = new ObjectMapper();
-            // Map<String, Object> testOrderMap = testOrderMapper.readValue(testOrder, Map.class);
-
-            // if( (boolean) testOrderMap.get("success") ) {
-            //     String myOrderID = (String) testOrderMap.get("id");
-            //     logger.info(Util.headerString(exchCode, xCoinPair, "CancelOrder") + coinCheckHandler.cancelOrderID(myOrderID));
-            // } else {
-            //     logger.info(testOrderMap.toString());
-            // }
-            // Map<String, Object> openOrderMap = testOrderMapper.readValue(openOrdersJson, Map.class);
-            // if( (boolean) testOrderMap.get("success") ) {
-            //     String myOrderID = (String) testOrderMap.get("id");
-            //     logger.info(Util.headerString(exchCode, xCoinPair, "CancelOrder") + coinCheckHandler.cancelOrderID(myOrderID));
-            // } else {
-            //     logger.info(testOrderMap.toString());
-            // }
 
             System.exit(0);
         } catch ( Exception e) {
