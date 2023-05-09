@@ -109,11 +109,12 @@ public class Configuration {
         String apiKey = exchanges.getElementsByTagName("api_key").item(0).getTextContent();
         String apiSecret = exchanges.getElementsByTagName("api_secret").item(0).getTextContent();
         String exchangeName = exchanges.getElementsByTagName("exch_name").item(0).getTextContent();
-        String coinPair = exchanges.getElementsByTagName("coin_pair").item(0).getTextContent();
+        String xCoin = exchanges.getElementsByTagName("coin").item(0).getTextContent();
+        String xCurrency = exchanges.getElementsByTagName("currency").item(0).getTextContent();
         logger.info("Exchange Name: " + exchangeName);
         logger.info("Base URL: " + baseUrl);
         logger.info("================================");
-        ExchangeX yExchange = new ExchangeX(apiKey, apiSecret, baseUrl, exchangeName,coinPair);
+        ExchangeX yExchange = new ExchangeX(apiKey, apiSecret, baseUrl, exchangeName, xCoin, xCurrency);
         pairExchanges.put(exchangeName, yExchange); 
     }
 }
