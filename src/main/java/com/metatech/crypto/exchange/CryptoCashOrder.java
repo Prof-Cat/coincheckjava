@@ -3,19 +3,20 @@ package com.metatech.crypto.exchange;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public abstract class CryptoCashOrder {
+public class CryptoCashOrder {
 
     protected String orderAccount;  // Tag <1>
     protected String clientOrderID; // Tag <11>
     protected Integer curHandInst;  // Tag <21>
     protected CoinCheckOrderType orderType;  // Tag <40>
     protected Double orderQty;   // Tag <38>
+    protected TagMap.OrderStatus orderStatus;  // Tag <39>
     protected Double orderPrice;     // Tag <44>
     protected String currency;  // Tag <15>
     protected String coinID;    // Tag <48>
     protected String coinIDSource;  // Tag <22>
     protected String coin;        // Tag <55>
-    protected String timeInForce;      // Tag <59>
+    protected TagMap.TimeInForce timeInForce;      // Tag <59>
     protected LocalDate tradeDate;        // Tag <75>
     protected String coinType;  // Tag <167> 
     protected LocalTime expireTime;  // Tag <126>
@@ -34,11 +35,39 @@ public abstract class CryptoCashOrder {
         this.orderAccount = "";
         this.orderPrice = -1.0;
         this.orderQty = 0.0;
+        this.orderStatus = TagMap.OrderStatus.LOCAL;
         this.orderType = CoinCheckOrderType.LIMTTBUY;
         this.portfolioName = "my test";
         this.text = "coin check mm";
-        this.timeInForce = "DAY";   // TODO: ENUM planned
+        this.timeInForce = TagMap.TimeInForce.DAY;   // TODO: ENUM planned
         this.tradeDate = LocalDate.now();
+    }
+
+    public void initSingleOrder(double xPrice, double xQty, String xCoin, String xCurrency, CoinCheckOrderType xOrderType ){
+        this.orderPrice = xPrice;
+        this.orderQty = xQty;
+        this.orderType = xOrderType;
+        this.coin = xCoin;
+        this.currency = xCurrency;
+
+        // validation - limit check & sanity check
+
+        // Assign order ID
+
+        //
+
+    }
+
+    public String buildPostBody(){
+        // String bodyNewOrder = "{\"rate\":" + xPrice + ",\"amount\":" + xQty + ",\"order_type\":\"" + xOrderType.getValue() + "\",\"pair\":\"" + xCoinPair + "\"}";
+        // String bodyNewOrder = "{rate=" + xPrice + "&amount=" + xQty + "&order_type=" + xOrderType.getValue() + "&pair=" + xCoinPair + "}";
+        // String bodyNewOrder = "rate=" + xPrice + "&amount=" + xQty + "&order_type=" + xOrderType.getValue() + "&pair=" + xCoinPair;
+        String myPostBody = "rate=" + this.orderPrice + "&amount=" + this.orderQty + "&order_type=" + this.orderType.getValue() + "&pair=" + this.getCoinPair();
+        return myPostBody;
+    }
+
+    public String getCoinPair(){
+        return this.coin + "_" + this.currency;
     }
 
     public void setClOrdID(String xID){
@@ -71,6 +100,12 @@ public abstract class CryptoCashOrder {
     public double getQty(){
         return this.orderQty;
     }
+    public void setOrderStatus(TagMap.OrderStatus xStatus){
+        this.orderStatus = xStatus;
+    }; 
+    public TagMap.OrderStatus getOrderStatus(){
+        return this.orderStatus;
+    };   
     public void setPrice(double xPrice){
         this.orderPrice = xPrice;
     }     
@@ -89,10 +124,10 @@ public abstract class CryptoCashOrder {
     public String getCoin(){
         return this.coin;
     }
-    public void setTimeInForce(String xTIF){
+    public void setTimeInForce(TagMap.TimeInForce xTIF){
         this.timeInForce = xTIF;
     } 
-    public String getTIF(){
+    public TagMap.TimeInForce getTIF(){
         return this.timeInForce;
     }
     public void setTradeDate( LocalDate xDate){
