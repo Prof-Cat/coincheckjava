@@ -107,7 +107,7 @@ public class Util {
                 .uri(URI.create(url))
                 .header("ACCESS-KEY", apiKey)
                 .header("ACCESS-NONCE", nonce)
-                .header("ACCESS-SIGNATURE", Util.createSignature(nonce + url, apiSecret))
+                .header("ACCESS-SIGNATURE", Util.createSignature(nonce + url + xBody, apiSecret))
                 .POST(HttpRequest.BodyPublishers.ofString(xBody,StandardCharsets.UTF_8 ))
                 .build();
 
@@ -119,6 +119,8 @@ public class Util {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             System.out.println(response.statusCode());
             System.out.println(response.body());
+            System.out.println(response.headers());
+
             jsonString = response.body();
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
