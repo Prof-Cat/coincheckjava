@@ -52,7 +52,21 @@ public class LineHandler {
             String jsonString;
             // order price check, and qty check, etc should pass before reaching here
             String url = targetExchange.getBaseUrl() + "exchange/orders";
-            String bodyNewOrder = "{\"rate\":" + xPrice + ",\"amount\":" + xQty + ",\"order_type\":\"" + xOrderType.getValue() + "\",\"pair\":\"" + xCoinPair + "\"}";
+            // String bodyNewOrder = "{\"rate\":" + xPrice + ",\"amount\":" + xQty + ",\"order_type\":\"" + xOrderType.getValue() + "\",\"pair\":\"" + xCoinPair + "\"}";
+            // String bodyNewOrder = "{rate=" + xPrice + "&amount=" + xQty + "&order_type=" + xOrderType.getValue() + "&pair=" + xCoinPair + "}";
+            String bodyNewOrder = "rate=" + xPrice + "&amount=" + xQty + "&order_type=" + xOrderType.getValue() + "&pair=" + xCoinPair;
+            logger.info(Util.headerString(targetExchange.exchangeName, xCoinPair, "newOrder") + bodyNewOrder);
+            jsonString = Util.postByUrlWithHeader(url, apiKey, apiSecret, bodyNewOrder);
+            return jsonString;
+        }
+
+        public String newOrder( CryptoCashOrder myNewCashOrder ){
+            String jsonString;
+            // order price check, and qty check, etc should pass before reaching here
+            String url = targetExchange.getBaseUrl() + "exchange/orders";
+
+            String bodyNewOrder = myNewCashOrder.buildPostBody();
+            logger.info(Util.headerString(targetExchange.exchangeName, targetExchange.getCoinPair(), "newOrder") + bodyNewOrder);
             jsonString = Util.postByUrlWithHeader(url, apiKey, apiSecret, bodyNewOrder);
             return jsonString;
         }
