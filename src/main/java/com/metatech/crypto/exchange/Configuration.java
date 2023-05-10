@@ -67,7 +67,7 @@ public class Configuration {
         return Configuration.tradingDatabase;
     }
 
-    public StaticdataCMC geStaticdataCMC(){
+    public static StaticdataCMC geStaticdataCMC(){
         return Configuration.coinMarketCap;
     }
 
