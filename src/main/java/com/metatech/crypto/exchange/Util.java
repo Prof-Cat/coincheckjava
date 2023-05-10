@@ -1,5 +1,6 @@
 package com.metatech.crypto.exchange;
 
+import com.google.api.client.http.HttpHeaders;
 import com.metatech.JavaCat.Testslf4j;
 import org.slf4j.Logger;
 import java.util.Properties;
@@ -18,6 +19,7 @@ import java.net.http.HttpRequest.BodyPublisher;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Util {
@@ -159,6 +161,29 @@ public class Util {
         return jsonString;
     }
 
+    public static HashMap<java.net.http.HttpHeaders, String> requestByPublicUrlMap(String url) {
+        java.net.http.HttpHeaders jsonHeaders;
+        String jsonStringBody;
+        HashMap<java.net.http.HttpHeaders, String> myResult = new HashMap<java.net.http.HttpHeaders, String>();
+        //logger.info(url);
+        try {
+            HttpClient httpClient = HttpClient.newHttpClient();
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .build();
+            HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            jsonStringBody = httpResponse.body();
+            jsonHeaders = httpResponse.headers();
+            myResult.put(jsonHeaders, jsonStringBody);
+
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
+        return myResult;
+    }
+    
     public static String HMAC_SHA256Encode(String secretKey, String message) {
 
         SecretKeySpec keySpec = new SecretKeySpec(secretKey.getBytes(),"hmacSHA256");
