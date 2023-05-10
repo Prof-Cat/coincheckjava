@@ -36,7 +36,7 @@ public class StaticdataCMC {
     private Integer targetID;
     private static final Logger logger = Testslf4j.getLogger(StaticdataCMC.class);
 
-    public void StaticdataCMC(){
+    public StaticdataCMC(){
         this.baseUrl = "https://pro-api.coinmarketcap.com/";
         this.apiKey = "";
         this.baseCurrency = "JPY";
@@ -59,6 +59,7 @@ public class StaticdataCMC {
     public String getSymbolMap() {
         String url = this.getBaseUrl() + "/v1/cryptocurrency/map"; 
         String jsonString = com.metatech.crypto.exchange.Util.requestByPublicUrl(url);
+        logger.info(Util.headerString(this.apiHeader, this.targetSymbol, "StaticMap") + jsonString);
         return jsonString;
     }
 
