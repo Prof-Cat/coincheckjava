@@ -33,11 +33,21 @@ public class StaticDataAdaptor {
             logger.info("CONFIG: " + cfgFile);
             initStaticData(exchCode,cfgFile);
             
-            String myClassPath = System.getProperty("java.class.path");
-            logger.info(myClassPath);
-            staticdataCMC.getSymbolMap();
-
-            logger.info(staticdataCMC.getSymbolQuotes(1));
+            staticdataCMC.getSymbolsMap("BTC,ETH");
+            logger.info("================================");
+            staticdataCMC.getMetaDataV2Map("1,2");
+            logger.info("================================");
+            staticdataCMC.getListingHistory(7);
+            logger.info("================================");
+            staticdataCMC.getListingLatest(2);
+            logger.info("================================");
+            staticdataCMC.getListingNew(2);
+            logger.info("================================");
+            logger.info(staticdataCMC.getQuotesLatest("1,2"));
+            logger.info("================================");
+            staticdataCMC.getOHLCVHistory("1,2");
+            logger.info("================================");
+            staticdataCMC.getOHLCVLatest("1,2");
 
             System.exit(0);
         } catch ( Exception e) {
