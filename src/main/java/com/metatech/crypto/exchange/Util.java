@@ -51,7 +51,7 @@ public class Util {
         return jsonString;
     }
 
-    public static String requestByUrlWithHeaderParameters(String url, String apiKey){
+    public static String requestByUrlWithHeaderParameters(String url, String apiKeyHeaderString, String apiKey){
         HttpClient client = HttpClient.newHttpClient();
         // cmc-v2quotes.sh:curl -XGET -H'content-type: application/json' 
         // -H'x-cmc_pro_api_key: b2ca43e6-ea9d-4140-8642-c300a2045095' 
@@ -59,7 +59,7 @@ public class Util {
         
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
-                .header("x-cmc_pro_api_key", apiKey)
+                .header(apiKeyHeaderString, apiKey)
                 .header("content-type", "application/json")
                 .GET()
                 .build();
