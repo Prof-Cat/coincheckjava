@@ -13,6 +13,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 
 
@@ -81,23 +82,19 @@ public class Configuration {
     }
 
     private static void processCoinMarketCap( Element xRoot ){
-        // <base_url>https://pro-api.coinmarketcap.com/</base_url>
-        // <static_info>v2/cryptocurrency/info</static_info>
-        // <static_map>v1/cryptocurrency/map</static_map>
-        // <apiHeader>X-CMC_PRO_API_KEY</apiHeader>
-        // <api_key>api_key</api_key>
-        // <base_currency>jpy</base_currency>
-        // <target_symbol>bitcoin</target_symbol>
-        // Get static data source information
         Element static_data_cmc = (Element) xRoot.getElementsByTagName("coinmarketcap").item(0);
         coinMarketCap.setBaseUrl(static_data_cmc.getElementsByTagName("base_url").item(0).getTextContent());
         coinMarketCap.setApiKey(static_data_cmc.getElementsByTagName("api_key").item(0).getTextContent());
-        String static_map = static_data_cmc.getElementsByTagName("static_map").item(0).getTextContent();
-        coinMarketCap.setApiHeader( static_data_cmc.getElementsByTagName("apiHeader").item(0).getTextContent());
-        String base_currency = static_data_cmc.getElementsByTagName("base_currency").item(0).getTextContent();
-        String target_symbol = static_data_cmc.getElementsByTagName("target_symbol").item(0).getTextContent();
-        
-        logger.info("Coin Pair:" + static_map);
+        coinMarketCap.setApiKeyHeader( static_data_cmc.getElementsByTagName("apiHeader").item(0).getTextContent());
+        coinMarketCap.setBaseCurrency( static_data_cmc.getElementsByTagName("base_currency").item(0).getTextContent());
+        coinMarketCap.setTargetSymbol(static_data_cmc.getElementsByTagName("target_symbol").item(0).getTextContent());
+
+        // Parse the XML and add key-value pairs to the maps
+        NodeList endPointsList = static_data_cmc.getElementsByTagName("cmc_endpoints");
+        for (int i = 0; i < endPointsList.getLength(); i++) {
+            Element xEndPoint = (Element) endPointsList.item(i);
+            coinMarketCap.addEndPoints(xEndPoint.getAttribute("key"), xEndPoint.getTextContent());
+        }
         logger.info("==============================");
     
     }
