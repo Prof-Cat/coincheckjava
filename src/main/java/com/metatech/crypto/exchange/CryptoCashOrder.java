@@ -10,13 +10,13 @@ public class CryptoCashOrder {
     protected Integer curHandInst;  // Tag <21>
     protected CoinCheckOrderType orderType;  // Tag <40>
     protected Double orderQty;   // Tag <38>
-    protected TagMap.OrderStatus orderStatus;  // Tag <39>
+    protected TagMap.OrderStatusEnum orderStatus;  // Tag <39>
     protected Double orderPrice;     // Tag <44>
     protected String currency;  // Tag <15>
     protected String coinID;    // Tag <48>
     protected String coinIDSource;  // Tag <22>
     protected String coin;        // Tag <55>
-    protected TagMap.TimeInForce timeInForce;      // Tag <59>
+    protected TagMap.TimeInForceEnum timeInForce;      // Tag <59>
     protected LocalDate tradeDate;        // Tag <75>
     protected String coinType;  // Tag <167> 
     protected LocalTime expireTime;  // Tag <126>
@@ -35,11 +35,11 @@ public class CryptoCashOrder {
         this.orderAccount = "";
         this.orderPrice = -1.0;
         this.orderQty = 0.0;
-        this.orderStatus = TagMap.OrderStatus.LOCAL;
+        this.orderStatus = TagMap.OrderStatusEnum.LOCAL;
         this.orderType = CoinCheckOrderType.LIMTTBUY;
         this.portfolioName = "my test";
         this.text = "coin check mm";
-        this.timeInForce = TagMap.TimeInForce.DAY;   // TODO: ENUM planned
+        this.timeInForce = TagMap.TimeInForceEnum.DAY;   // TODO: ENUM planned
         this.tradeDate = LocalDate.now();
     }
 
@@ -100,10 +100,10 @@ public class CryptoCashOrder {
     public double getQty(){
         return this.orderQty;
     }
-    public void setOrderStatus(TagMap.OrderStatus xStatus){
+    public void setOrderStatus(TagMap.OrderStatusEnum xStatus){
         this.orderStatus = xStatus;
     }; 
-    public TagMap.OrderStatus getOrderStatus(){
+    public TagMap.OrderStatusEnum getOrderStatus(){
         return this.orderStatus;
     };   
     public void setPrice(double xPrice){
@@ -124,10 +124,10 @@ public class CryptoCashOrder {
     public String getCoin(){
         return this.coin;
     }
-    public void setTimeInForce(TagMap.TimeInForce xTIF){
+    public void setTimeInForce(TagMap.TimeInForceEnum xTIF){
         this.timeInForce = xTIF;
     } 
-    public TagMap.TimeInForce getTIF(){
+    public TagMap.TimeInForceEnum getTIF(){
         return this.timeInForce;
     }
     public void setTradeDate( LocalDate xDate){
