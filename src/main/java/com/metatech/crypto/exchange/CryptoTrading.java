@@ -2,7 +2,6 @@ package com.metatech.crypto.exchange;
 
 import com.metatech.JavaCat.Testslf4j;
 import org.slf4j.Logger;
-import java.util.Properties;
 import java.util.Map;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,50 +14,53 @@ public class CryptoTrading {
  
     private static final Logger logger = Testslf4j.getLogger(CryptoTrading.class);
     public static ExchangeX targetExchange;
-    protected static Marketdata realTimeData;
-    protected static Map<String, ExchangeX> myConfigMap;
+    protected static ExchangeAccount coinCheckAccount;
+    protected static Marketdata coinCheckRealTimeData;
     protected static LineHandler coinCheckHandler;
+    protected static LineHandler zaifHandler;
 
     public static void main(String[] args) {
         
         String exchCode = System.getProperty("TARGET");
         String cfgFile = System.getProperty("CONFIG");
-        // Properties props = System.getProperties(); props.list(System.out);
                 
         if ( cfgFile == null ){
             System.out.print( helpUsage);
             System.exit(-1);
         }
         try {
-            // Load the log4j2.xml or log4j2.properties file
             System.setProperty("current.date", new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date()));
             logger.info("CONFIG: " + cfgFile);
             initTrading(exchCode,cfgFile);
             
-            String myClassPath = System.getProperty("java.class.path");
-            logger.info(myClassPath);
-            String xCoinPair = realTimeData.targetExchange.getCoinPair();
+            String xCoinPair = coinCheckRealTimeData.targetExchange.getCoinPair();
 
             // logger.info(api.getTicker());
             for ( int i=0; i<1; i++){
-                logger.info("Exchange=" + exchCode + "::Pair=" + xCoinPair  + "::Type=ticker::" + realTimeData.getPublicTicker());
-                logger.info("Exchange=" + exchCode + "::Pair=" + xCoinPair  + "::Type=trades::" + realTimeData.getPublicTrades());
-                logger.info("Exchange=" + exchCode + "::Pair=" + xCoinPair  + "::Type=orderbook::" + realTimeData.getPublicOrderBooks());
+                logger.info("Exchange=" + exchCode + "::Pair=" + xCoinPair  + "::Type=ticker::" + coinCheckRealTimeData.getPublicTicker());
+                logger.info("================");
+                logger.info("Exchange=" + exchCode + "::Pair=" + xCoinPair  + "::Type=trades::" + coinCheckRealTimeData.getPublicTrades());
+                logger.info("================");
+                logger.info("Exchange=" + exchCode + "::Pair=" + xCoinPair  + "::Type=orderbook::" + coinCheckRealTimeData.getPublicOrderBooks());
+                logger.info("================");
                 Thread.sleep(1000);
             }
 
-            ExchangeAccount coinCheckAccount = new ExchangeAccount(exchCode, myConfigMap);
+
             logger.info(Util.headerString(exchCode, xCoinPair, "AccountInfo") + coinCheckAccount.getAccountInfo()); Thread.sleep(300);
+            logger.info("================");
             logger.info(Util.headerString(exchCode, xCoinPair, "AccountBalance") + coinCheckAccount.getAccountBalance()); Thread.sleep(300);
+            logger.info("================");
             Thread.sleep(300);
 
-            LineHandler coinCheckHandler = new LineHandler(exchCode, myConfigMap);
             logger.info(Util.headerString(exchCode, xCoinPair, "OpenOrders") + coinCheckHandler.getOpenOrders());
+            logger.info("================");
             logger.info(Util.headerString(exchCode, xCoinPair, "Transactions") + coinCheckHandler.getTransactions());
+            logger.info("================");
 
             // Prepare new order from data source
             CryptoCashOrder myNewOrder = new CryptoCashOrder();
-            myNewOrder.initSingleOrder(0.20, 3000, realTimeData.targetExchange.coin, realTimeData.targetExchange.currency, CoinCheckOrderType.LIMTTBUY);
+            myNewOrder.initSingleOrder(0.20, 3000, coinCheckRealTimeData.targetExchange.getCoin(), coinCheckRealTimeData.targetExchange.getCurrency(), CoinCheckOrderType.LIMTTBUY);
             sendNewOrderSingle(myNewOrder);
 
             // cancel all open orders
@@ -74,13 +76,13 @@ public class CryptoTrading {
 
     public static void initTrading(String exchCode, String cfgFile){
         try {
-            myConfigMap = Configuration.loadConfig(cfgFile);
-            String myClassPath = System.getProperty("java.class.path");
-            logger.info(myClassPath);
-    
-            realTimeData = new Marketdata(exchCode, myConfigMap);
-            // String xCoinPair = realTimeData.targetExchange.coinPair;
-            coinCheckHandler = new LineHandler(exchCode, myConfigMap);    
+            Configuration.loadConfig(cfgFile);
+
+            coinCheckRealTimeData = new Marketdata(exchCode, Configuration.primaryExchAttributeTreeMap);
+            coinCheckHandler = new LineHandler(exchCode, Configuration.primaryExchAttributeTreeMap);   
+            coinCheckAccount = new ExchangeAccount(exchCode, Configuration.primaryExchAttributeTreeMap ); 
+            zaifHandler = new LineHandler(exchCode, Configuration.secondaryAttributeTreeMap);   
+
         } catch ( Exception e){
             logger.error(e.toString());
         }
@@ -96,8 +98,8 @@ public class CryptoTrading {
 
             if (testOrderResponseJson.getBoolean("success")) {
                 String myOrderID = testOrderResponseJson.getString("id");
-                logger.info(Util.headerString(realTimeData.targetExchange.exchangeName, 
-                    realTimeData.targetExchange.getCoinPair(), 
+                logger.info(Util.headerString(coinCheckRealTimeData.targetExchange.getExchangeName(), 
+                coinCheckRealTimeData.targetExchange.getCoinPair(), 
                     "CancelOrder") + coinCheckHandler.cancelOrderID(myOrderID));
             } else {
                 logger.info(testOrderResponseJson.toString());
