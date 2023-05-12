@@ -1,10 +1,5 @@
 package com.metatech.crypto.exchange;
 
-import com.google.api.client.http.HttpHeaders;
-import com.metatech.JavaCat.Testslf4j;
-import org.slf4j.Logger;
-import java.util.Properties;
-
 import org.apache.commons.codec.binary.Hex;
 
 import javax.crypto.Mac;
@@ -15,12 +10,10 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.net.http.HttpRequest.BodyPublisher;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
-import java.util.Map;
 
 public class Util {
 
