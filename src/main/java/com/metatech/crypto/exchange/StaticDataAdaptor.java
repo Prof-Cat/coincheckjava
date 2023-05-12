@@ -2,12 +2,10 @@ package com.metatech.crypto.exchange;
 
 import com.metatech.JavaCat.Testslf4j;
 import org.slf4j.Logger;
-import java.util.Properties;
-import java.util.Map;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import org.json.JSONArray;
-import org.json.JSONObject;
+
 
 public class StaticDataAdaptor {
 
@@ -16,7 +14,6 @@ public class StaticDataAdaptor {
     private static final Logger logger = Testslf4j.getLogger(StaticDataAdaptor.class);
     public static ExchangeX targetExchange;
     protected static StaticdataCMC staticdataCMC;
-    protected static Map<String, ExchangeX> myConfigMap;
 
     public static void main(String[] args) {
         
@@ -57,8 +54,10 @@ public class StaticDataAdaptor {
 
     public static void initStaticData(String exchCode, String cfgFile){
         try {
-            myConfigMap = Configuration.loadConfig(cfgFile);
-            staticdataCMC = Configuration.geStaticdataCMC();
+            Configuration.loadConfig(cfgFile);
+            staticdataCMC = new StaticdataCMC();
+            staticdataCMC.setBaseAttributeMap( Configuration.cmcBaseAttributesTreeMap );
+            staticdataCMC.setEndPointsMap(Configuration.cmcEndPointsTreeMap);
         } catch ( Exception e){
             logger.error(e.toString());
         }
