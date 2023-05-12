@@ -1,6 +1,9 @@
 package com.metatech.crypto.exchange;
 
 import org.junit.Test;
+
+import com.metatech.crypto.exchange.TagMap.ExchangeEnum;
+
 import static org.junit.Assert.*;
 import java.util.Map;
 
@@ -8,8 +11,8 @@ public class ConfigFileTest {
     @Test
     public void testFileRead() {
         try {
-            Map<String, ExchangeX> myConfigMap = Configuration.loadConfig("./cnf/exchange.cnf.xml");
-            assertNotNull(myConfigMap.containsKey("coincheck"));
+            Configuration.loadConfig("./cnf/exchange.cnf.xml");
+            assertNotNull(Configuration.primaryExchAttributeTreeMap.get(ExchangeEnum.EXHANGENAME.getValue()));
             //assertEquals(null, 0, 0, 0);
         } catch ( Exception e) {
             System.out.println(e.toString());
