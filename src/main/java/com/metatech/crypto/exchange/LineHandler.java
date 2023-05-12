@@ -1,23 +1,26 @@
 package com.metatech.crypto.exchange;
 
 import com.metatech.JavaCat.Testslf4j;
+import com.metatech.crypto.exchange.TagMap.ExchangeEnum;
+
 import org.slf4j.Logger;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class LineHandler {
     private String apiKey;
     private String apiSecret;
-    public static ExchangeX targetExchange;
+    public ExchangeX targetExchange;
     private static final Logger logger = Testslf4j.getLogger(LineHandler.class);
 
-    public LineHandler(String xExchange, Map<String, ExchangeX> theMap) {
+    public LineHandler(String xExchange, TreeMap<String, String>theMap) {
         try {
-            targetExchange = theMap.get(xExchange);
+            targetExchange = new ExchangeX(theMap);
             apiKey = targetExchange.getApiKey();
             apiSecret = targetExchange.getSecret();
-            logger.info("LineHandler initialized with " + xExchange);
+            logger.info("LineHandler initialized with " + targetExchange.getExchangeName());
         } catch (Exception e) {
-            logger.info("LineHandler initialization FAILED" + xExchange);
+            logger.info("LineHandler initialization FAILED" + theMap.get(ExchangeEnum.EXHANGENAME.getValue()));
             logger.error(xExchange, e);
         }
     }
@@ -55,7 +58,7 @@ public class LineHandler {
             // String bodyNewOrder = "{\"rate\":" + xPrice + ",\"amount\":" + xQty + ",\"order_type\":\"" + xOrderType.getValue() + "\",\"pair\":\"" + xCoinPair + "\"}";
             // String bodyNewOrder = "{rate=" + xPrice + "&amount=" + xQty + "&order_type=" + xOrderType.getValue() + "&pair=" + xCoinPair + "}";
             String bodyNewOrder = "rate=" + xPrice + "&amount=" + xQty + "&order_type=" + xOrderType.getValue() + "&pair=" + xCoinPair;
-            logger.info(Util.headerString(targetExchange.exchangeName, xCoinPair, "newOrder") + bodyNewOrder);
+            logger.info(Util.headerString(targetExchange.getExchangeName(), xCoinPair, "newOrder") + bodyNewOrder);
             jsonString = Util.postByUrlWithHeader(url, apiKey, apiSecret, bodyNewOrder);
             return jsonString;
         }
@@ -66,7 +69,7 @@ public class LineHandler {
             String url = targetExchange.getBaseUrl() + "exchange/orders";
 
             String bodyNewOrder = myNewCashOrder.buildPostBody();
-            logger.info(Util.headerString(targetExchange.exchangeName, targetExchange.getCoinPair(), "newOrder") + bodyNewOrder);
+            logger.info(Util.headerString(targetExchange.getExchangeName(), targetExchange.getCoinPair(), "newOrder") + bodyNewOrder);
             jsonString = Util.postByUrlWithHeader(url, apiKey, apiSecret, bodyNewOrder);
             return jsonString;
         }
