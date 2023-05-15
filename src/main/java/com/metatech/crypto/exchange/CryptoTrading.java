@@ -59,9 +59,10 @@ public class CryptoTrading {
             logger.info("================");
 
             // Prepare new order from data source
-            CryptoCashOrder myNewOrder = new CryptoCashOrder();
-            myNewOrder.initSingleOrder(0.20, 3000, coinCheckRealTimeData.targetExchange.getCoin(), coinCheckRealTimeData.targetExchange.getCurrency(), CoinCheckOrderType.LIMTTBUY);
-            sendNewOrderSingle(myNewOrder);
+            PortfolioOrder myNewOrder = new PortfolioOrder();
+            myNewOrder.initSingleOrder(0.18, 3500, xCoinPair, CoinCheckOrderType.LIMTTBUY);
+        
+            //sendNewOrderSingle(myNewOrder);
 
             // cancel all open orders
             cancelAllOrders(xCoinPair, exchCode);
@@ -88,7 +89,7 @@ public class CryptoTrading {
         }
     }
 
-    public static void sendNewOrderSingle(CryptoCashOrder myNewCashOrder){
+    public static void sendNewOrderSingle(PortfolioOrder myNewCashOrder){
             // Send new test order
             // will use CryptoOrder class later
             String testOrder = coinCheckHandler.newOrder( myNewCashOrder );
