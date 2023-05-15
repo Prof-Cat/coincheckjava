@@ -23,28 +23,27 @@ public class Marketdata {
     }
 
     public String getPublicTicker() {
-        String url = targetExchange.getBaseUrl() + "/ticker?pair=" + targetExchange.getCoinPair(); 
+        String url = targetExchange.tickerEndPoint() + targetExchange.getCoinPair(); 
         String jsonString = Util.requestByPublicUrl(url);
         return jsonString;
     }
 
     public String getPublicTrades() {
-        String url = targetExchange.getBaseUrl() + "/trades?pair=" + targetExchange.getCoinPair(); 
+        String url = targetExchange.tradesEndPoint() + targetExchange.getCoinPair(); 
         String jsonString = Util.requestByPublicUrl(url);
         return jsonString;
     }
 
     public String getPublicOrderBooks() {
-        String url = targetExchange.getBaseUrl() + "/order_books?pair=" + targetExchange.getCoinPair(); 
+        String url = targetExchange.orderBookEndPoint() + targetExchange.getCoinPair(); 
         String jsonString = Util.requestByPublicUrl(url);
         return jsonString;
     }
 
-    public String getPrivateTicker() {
-        String url = targetExchange.getBaseUrl() + "/accounts/ticker?pair=" + targetExchange.getCoinPair();
-        String jsonString = Util.requestByUrlWithHeader(url, apiKey, apiSecret);
-        return jsonString;
-    }
-
+    // public String getPrivateTicker() {
+    //     String url = targetExchange.getBaseUrl() + "/accounts/ticker?pair=" + targetExchange.getCoinPair();
+    //     String jsonString = Util.requestByUrlWithHeader(url, apiKey, apiSecret);
+    //     return jsonString;
+    // }
 
 }
