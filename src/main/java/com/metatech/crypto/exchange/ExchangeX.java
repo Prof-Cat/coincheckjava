@@ -24,4 +24,54 @@ public class ExchangeX {
     public String getCoinPair(){ return this.attributesMap.get(ExchangeEnum.SYMBOL.getValue()) + "_" + this.attributesMap.get(ExchangeEnum.CURRENCY.getValue()); }
     public String getCoin(){ return this.attributesMap.get(ExchangeEnum.SYMBOL.getValue());}
     public String getCurrency(){ return this.attributesMap.get(ExchangeEnum.CURRENCY.getValue());}
+
+    public String orderEndPoint(){ 
+        return this.attributesMap.get(ExchangeEnum.BASEURL.getValue()) + 
+            this.attributesMap.get(ExchangeEnum.ORDERENDPOINT.getValue());
+    }
+
+    public String opensEndPoint(){ 
+        return this.orderEndPoint() + 
+            this.attributesMap.get(ExchangeEnum.OPENSENDPOINT.getValue());
+    }
+
+    public String transactionEndPoint(){ 
+        return this.orderEndPoint() + 
+            this.attributesMap.get(ExchangeEnum.TXSENDPOINT.getValue());
+    }
+
+    public String cancelStatusEndPoint(){ 
+        return this.orderEndPoint() + 
+            this.attributesMap.get(ExchangeEnum.CANCELSTATUS.getValue());
+    }
+
+    public String pagedTxsEndPoint(){
+        return this.orderEndPoint() +
+            this.attributesMap.get(ExchangeEnum.PAGEDTXS.getValue());
+    }
+
+    public String accountInfoEndPoint(){
+        return this.getBaseUrl() +
+            this.attributesMap.get(ExchangeEnum.ACCTINFO.getValue());
+    }
+
+    public String accountBallanceEndPoint(){
+        return this.getBaseUrl() +
+            this.attributesMap.get(ExchangeEnum.ACCTBALLANCE.getValue());
+    }
+    public String tickerEndPoint(){
+        return this.getBaseUrl() +
+            this.attributesMap.get(ExchangeEnum.PUBTICKER.getValue());
+    }
+
+    public String tradesEndPoint(){
+        return this.getBaseUrl() +
+            this.attributesMap.get(ExchangeEnum.PUBTRADES.getValue());
+    }
+
+    public String orderBookEndPoint(){
+        return this.getBaseUrl() +
+            this.attributesMap.get(ExchangeEnum.ORDERBOOKS.getValue());
+    }
 }
+
