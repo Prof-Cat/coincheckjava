@@ -1,6 +1,9 @@
 package com.metatech.crypto.exchange;
 
 import org.apache.commons.codec.binary.Hex;
+import org.slf4j.Logger;
+
+import com.metatech.JavaCat.Testslf4j;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -16,6 +19,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 
 public class Util {
+
+    private static final Logger logger = Testslf4j.getLogger(Util.class);
+    public static String UnderScoreSplitter = "_";
 
     // TODO : make methods thread safe
     public static String requestByUrlWithHeader(String url, String apiKey, String apiSecret){
@@ -112,9 +118,9 @@ public class Util {
         String jsonString;
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println(response.statusCode());
-            System.out.println(response.body());
-            System.out.println(response.headers());
+            logger.info( "response status code :{}", response.statusCode());
+            logger.info(response.body());
+            logger.info(response.headers().toString());
 
             jsonString = response.body();
         } catch (IOException | InterruptedException e) {
@@ -143,6 +149,10 @@ public class Util {
                     .uri(URI.create(url))
                     .build();
             HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            logger.info( "response status code :{}", httpResponse.statusCode());
+            logger.info(httpResponse.body());
+            logger.info(httpResponse.headers().toString());
+
             jsonString = httpResponse.body();
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
@@ -203,4 +213,5 @@ public class Util {
     public static String generateNextClOrdID(){
         return "testOrderID";   // to be thread safe sequencial formated string
     }
+
 }
