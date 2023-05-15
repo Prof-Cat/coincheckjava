@@ -2,7 +2,6 @@ package com.metatech.crypto.exchange;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Currency;
 
 import com.fasterxml.jackson.databind.JsonSerializable.Base;
 import com.metatech.crypto.exchange.TagMap.BaseCurrency;
@@ -52,12 +51,13 @@ public class PortfolioOrder {
         this.theDate = LocalDate.now();
     }
 
-    public void initSingleOrder(double xPrice, double xQty, String xCoin, BaseCurrency xCurrency, CoinCheckOrderType xOrderType ){
+    public void initSingleOrder(double xPrice, double xQty, String xCoin, 
+        String xCurrency, CoinCheckOrderType xOrderType ){
         this.orderPrice = xPrice;
         this.orderQty = xQty;
         this.orderType = xOrderType;
         this.coin = xCoin;
-        this.currency = xCurrency;
+        this.currency = TagMap.BaseCurrency.fromValue(xCurrency);
 
         // validation - limit check & sanity check
 
@@ -65,6 +65,11 @@ public class PortfolioOrder {
 
         //
 
+    }
+
+    public void initSingleOrder(double xPrice, double xQty, String xCoinPair, CoinCheckOrderType xOrderType ){
+        String xMyPair[] = xCoinPair.split("_");
+        this.initSingleOrder(xPrice, xQty, xMyPair[0], xMyPair[1], xOrderType);
     }
 
     public String buildPostBody(){
