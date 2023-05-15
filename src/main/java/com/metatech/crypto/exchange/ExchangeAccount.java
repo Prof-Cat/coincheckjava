@@ -24,7 +24,7 @@ public class ExchangeAccount {
     }
         // GET /api/accounts/balance
         public String getAccountBalance() {
-            String url = targetExchange.getBaseUrl() + "accounts/balance";
+            String url = targetExchange.accountBallanceEndPoint();
             logger.info(url);
             String jsonString = Util.requestByUrlWithHeader(url, apiKey, apiSecret);
             return jsonString;
@@ -32,7 +32,7 @@ public class ExchangeAccount {
     
         // GET /api/accounts
         public String getAccountInfo() {
-            String url = targetExchange.getBaseUrl() + "accounts";
+            String url = targetExchange.accountInfoEndPoint();
             String jsonString = Util.requestByUrlWithHeader(url, apiKey, apiSecret);
             return jsonString;
         }
