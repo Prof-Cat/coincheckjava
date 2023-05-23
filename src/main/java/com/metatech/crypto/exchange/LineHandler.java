@@ -1,7 +1,7 @@
 package com.metatech.crypto.exchange;
 
 import com.metatech.JavaCat.Testslf4j;
-import com.metatech.crypto.exchange.TagMap.ExchangeEnum;
+import com.metatech.crypto.exchange.TagMap.ExchangeAccessEnum;
 
 import org.slf4j.Logger;
 import java.util.TreeMap;
@@ -9,17 +9,17 @@ import java.util.TreeMap;
 public class LineHandler {
     private String apiKey;
     private String apiSecret;
-    public ExchangeX targetExchange;
+    public ExchangeWrapper targetExchange;
     private static final Logger logger = Testslf4j.getLogger(LineHandler.class);
 
     public LineHandler(String xExchange, TreeMap<String, String>theMap) {
         try {
-            targetExchange = new ExchangeX(theMap);
+            targetExchange = new ExchangeWrapper(theMap);
             apiKey = targetExchange.getApiKey();
             apiSecret = targetExchange.getSecret();
             logger.info("LineHandler initialized with " + targetExchange.getExchangeName());
         } catch (Exception e) {
-            logger.info("LineHandler initialization FAILED" + theMap.get(ExchangeEnum.EXHANGENAME.getValue()));
+            logger.info("LineHandler initialization FAILED" + theMap.get(ExchangeAccessEnum.EXHANGENAME.getValue()));
             logger.error(xExchange, e);
         }
     }
@@ -38,13 +38,13 @@ public class LineHandler {
             return jsonString;
         }
     
-        public String newOrder( PortfolioOrder myNewCashOrder ){
+        public String newOrder( OrderPortfolio myNewCashOrder ){
             String jsonString;
             // order price check, and qty check, etc should pass before reaching here
             String url = targetExchange.orderEndPoint();
 
             String bodyNewOrder = myNewCashOrder.buildPostBody();
-            logger.info(Util.headerString(targetExchange.getExchangeName(), targetExchange.getCoinPair(), ExchangeEnum.NEWORDER.getValue()) + bodyNewOrder);
+            logger.info(Util.headerString(targetExchange.getExchangeName(), targetExchange.getCoinPair(), ExchangeAccessEnum.NEWORDER.getValue()) + bodyNewOrder);
             jsonString = Util.postByUrlWithHeader(url, apiKey, apiSecret, bodyNewOrder);
             return jsonString;
         }

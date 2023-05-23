@@ -12,7 +12,7 @@ public class StaticDataAdaptor {
     public static final String helpUsage = "StaticDataAdaptor -DCONFIG=<cfg file name> -DTARGET=<exchange code>\n\n";
  
     private static final Logger logger = Testslf4j.getLogger(StaticDataAdaptor.class);
-    public static ExchangeX targetExchange;
+    public static ExchangeWrapper targetExchange;
     protected static StaticdataCMC staticdataCMC;
 
     public static void main(String[] args) {
@@ -30,7 +30,7 @@ public class StaticDataAdaptor {
             logger.info("CONFIG: " + cfgFile);
             initStaticData(exchCode,cfgFile);
             
-            staticdataCMC.getSymbolsMap("BTC,ETH");
+            staticdataCMC.getCoinsMap("BTC,ETH");
             logger.info("================================");
             staticdataCMC.getMetaDataV2Map("1,2");
             logger.info("================================");

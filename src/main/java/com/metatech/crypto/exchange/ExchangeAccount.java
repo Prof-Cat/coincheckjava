@@ -8,12 +8,12 @@ import java.util.TreeMap;
 public class ExchangeAccount {
     private String apiKey;
     private String apiSecret;
-    public static ExchangeX targetExchange;
+    public static ExchangeWrapper targetExchange;
     private static final Logger logger = Testslf4j.getLogger(ExchangeAccount.class);
 
     public ExchangeAccount(String xExchange, TreeMap<String, String> theMap) {
         try {
-            targetExchange = new ExchangeX(theMap);
+            targetExchange = new ExchangeWrapper(theMap);
             apiKey = targetExchange.getApiKey();
             apiSecret = targetExchange.getSecret();
             logger.info("ExchangeAccount initialized with " + xExchange);

@@ -52,23 +52,23 @@ public class StaticdataCMC {
     public String getEndPoint(CmcattributesEnum xTask){
         return cmcEndPointsTreeMap.get(CmcattributesEnum.BASEURL.getValue()) + cmcEndPointsTreeMap.get(xTask.getValue());
     }
-    public String getSymbolFullMap() {
+    public String getCoinFullMap() {
         String url = this.getEndPoint(CmcattributesEnum.IDMAP); 
         String jsonString = com.metatech.crypto.exchange.Util.requestByUrlWithHeaderParameters(url, 
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEY.getValue()));
         logger.info(Util.headerString(cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
-            cmcBaseAttributesTreeMap.get(CmcattributesEnum.SYMBOL.getValue()), CmcattributesEnum.IDMAP.getValue()) + jsonString);
+            cmcBaseAttributesTreeMap.get(CmcattributesEnum.COIN.getValue()), CmcattributesEnum.IDMAP.getValue()) + jsonString);
         return jsonString;
     }
 
-    public String getSymbolsMap(String xSymbolsString) {
-        String url = this.getEndPoint(CmcattributesEnum.IDMAP) + "?symbol=" + xSymbolsString; 
+    public String getCoinsMap(String xCoinsString) {
+        String url = this.getEndPoint(CmcattributesEnum.IDMAP) + "?symbol=" + xCoinsString; 
         String jsonString = com.metatech.crypto.exchange.Util.requestByUrlWithHeaderParameters(url, 
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEY.getValue()));
         logger.info(Util.headerString(cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
-            cmcBaseAttributesTreeMap.get(CmcattributesEnum.SYMBOL.getValue()), CmcattributesEnum.IDMAP.getValue()) + jsonString);
+            cmcBaseAttributesTreeMap.get(CmcattributesEnum.COIN.getValue()), CmcattributesEnum.IDMAP.getValue()) + jsonString);
         return jsonString;
     }
 
@@ -78,7 +78,7 @@ public class StaticdataCMC {
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEY.getValue()));
             logger.info(Util.headerString(cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
-                cmcBaseAttributesTreeMap.get(CmcattributesEnum.SYMBOL.getValue()), CmcattributesEnum.METADATAV2.getValue()) + jsonString);
+                cmcBaseAttributesTreeMap.get(CmcattributesEnum.COIN.getValue()), CmcattributesEnum.METADATAV2.getValue()) + jsonString);
         return jsonString;
     }
 
@@ -90,7 +90,7 @@ public class StaticdataCMC {
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEY.getValue()));
         logger.info(Util.headerString(cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
-            cmcBaseAttributesTreeMap.get(CmcattributesEnum.SYMBOL.getValue()), CmcattributesEnum.LISTINGHIST.getValue()) + jsonString);
+            cmcBaseAttributesTreeMap.get(CmcattributesEnum.COIN.getValue()), CmcattributesEnum.LISTINGHIST.getValue()) + jsonString);
         return jsonString;
     }
 
@@ -101,7 +101,7 @@ public class StaticdataCMC {
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEY.getValue()));
         logger.info(Util.headerString(cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
-            cmcBaseAttributesTreeMap.get(CmcattributesEnum.SYMBOL.getValue()), CmcattributesEnum.LISTINGLATEST.getValue()) + jsonString);
+            cmcBaseAttributesTreeMap.get(CmcattributesEnum.COIN.getValue()), CmcattributesEnum.LISTINGLATEST.getValue()) + jsonString);
         return jsonString;
     }
 
@@ -112,7 +112,7 @@ public class StaticdataCMC {
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEY.getValue()));
         logger.info(Util.headerString(cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
-            cmcBaseAttributesTreeMap.get(CmcattributesEnum.SYMBOL.getValue()), CmcattributesEnum.LISTINGNEW.getValue()) + jsonString);
+            cmcBaseAttributesTreeMap.get(CmcattributesEnum.COIN.getValue()), CmcattributesEnum.LISTINGNEW.getValue()) + jsonString);
         return jsonString;
     }
 
@@ -122,7 +122,7 @@ public class StaticdataCMC {
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEY.getValue()));
         logger.info(Util.headerString(cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
-            cmcBaseAttributesTreeMap.get(CmcattributesEnum.SYMBOL.getValue()), CmcattributesEnum.OHLCVHISTORY.getValue()) + jsonString);
+            cmcBaseAttributesTreeMap.get(CmcattributesEnum.COIN.getValue()), CmcattributesEnum.OHLCVHISTORY.getValue()) + jsonString);
         return jsonString;
     }
 
@@ -132,7 +132,7 @@ public class StaticdataCMC {
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEY.getValue()));
         logger.info(Util.headerString(cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
-            cmcBaseAttributesTreeMap.get(CmcattributesEnum.SYMBOL.getValue()), CmcattributesEnum.OHLCVLATEST.getValue()) + jsonString);
+            cmcBaseAttributesTreeMap.get(CmcattributesEnum.COIN.getValue()), CmcattributesEnum.OHLCVLATEST.getValue()) + jsonString);
         return jsonString;
     }
 
@@ -142,7 +142,7 @@ public class StaticdataCMC {
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEY.getValue()));
         logger.info(Util.headerString(cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
-            cmcBaseAttributesTreeMap.get(CmcattributesEnum.SYMBOL.getValue()), CmcattributesEnum.QUOTESHISTORY.getValue()) + jsonString);
+            cmcBaseAttributesTreeMap.get(CmcattributesEnum.COIN.getValue()), CmcattributesEnum.QUOTESHISTORY.getValue()) + jsonString);
         return jsonString;
     }
 
@@ -152,7 +152,7 @@ public class StaticdataCMC {
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEY.getValue()));
         logger.info(Util.headerString(cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
-            cmcBaseAttributesTreeMap.get(CmcattributesEnum.SYMBOL.getValue()), CmcattributesEnum.QUOTESLATEST.getValue()) + jsonString);
+            cmcBaseAttributesTreeMap.get(CmcattributesEnum.COIN.getValue()), CmcattributesEnum.QUOTESLATEST.getValue()) + jsonString);
         return jsonString;
     }
 
