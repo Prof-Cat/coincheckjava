@@ -13,7 +13,7 @@ public class CryptoTrading {
     public static final String helpUsage = "CryptoTrading -DCONFIG=<cfg file name> -DTARGET=<exchange code>\n\n";
  
     private static final Logger logger = Testslf4j.getLogger(CryptoTrading.class);
-    public static ExchangeX targetExchange;
+    public static ExchangeWrapper targetExchange;
     protected static ExchangeAccount coinCheckAccount;
     protected static Marketdata coinCheckRealTimeData;
     protected static LineHandler coinCheckHandler;
@@ -59,7 +59,7 @@ public class CryptoTrading {
             logger.info("================");
 
             // Prepare new order from data source
-            PortfolioOrder myNewOrder = new PortfolioOrder();
+            OrderPortfolio myNewOrder = new OrderPortfolio();
             myNewOrder.initSingleOrder(0.18, 3500, xCoinPair, CoinCheckOrderType.LIMTTBUY);
         
             //sendNewOrderSingle(myNewOrder);
@@ -89,7 +89,7 @@ public class CryptoTrading {
         }
     }
 
-    public static void sendNewOrderSingle(PortfolioOrder myNewCashOrder){
+    public static void sendNewOrderSingle(OrderPortfolio myNewCashOrder){
             // Send new test order
             // will use CryptoOrder class later
             String testOrder = coinCheckHandler.newOrder( myNewCashOrder );
