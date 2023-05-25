@@ -1,6 +1,8 @@
 package com.metatech.crypto.exchange;
 
 import com.metatech.JavaCat.Testslf4j;
+import com.metatech.crypto.exchange.util.WebUtil;
+
 import org.slf4j.Logger;
 import java.util.Map;
 import java.text.SimpleDateFormat;
@@ -47,15 +49,15 @@ public class CryptoTrading {
             }
 
 
-            logger.info(Util.headerString(exchCode, xCoinPair, "AccountInfo") + coinCheckAccount.getAccountInfo()); Thread.sleep(300);
+            logger.info(WebUtil.headerString(exchCode, xCoinPair, "AccountInfo") + coinCheckAccount.getAccountInfo()); Thread.sleep(300);
             logger.info("================");
-            logger.info(Util.headerString(exchCode, xCoinPair, "AccountBalance") + coinCheckAccount.getAccountBalance()); Thread.sleep(300);
+            logger.info(WebUtil.headerString(exchCode, xCoinPair, "AccountBalance") + coinCheckAccount.getAccountBalance()); Thread.sleep(300);
             logger.info("================");
             Thread.sleep(300);
 
-            logger.info(Util.headerString(exchCode, xCoinPair, "OpenOrders") + coinCheckHandler.getOpenOrders());
+            logger.info(WebUtil.headerString(exchCode, xCoinPair, "OpenOrders") + coinCheckHandler.getOpenOrders());
             logger.info("================");
-            logger.info(Util.headerString(exchCode, xCoinPair, "Transactions") + coinCheckHandler.getTransactions());
+            logger.info(WebUtil.headerString(exchCode, xCoinPair, "Transactions") + coinCheckHandler.getTransactions());
             logger.info("================");
 
             // Prepare new order from data source
@@ -67,7 +69,7 @@ public class CryptoTrading {
             // cancel all open orders
             cancelAllOrders(xCoinPair, exchCode);
 
-            logger.info(Util.headerString(exchCode, xCoinPair, "OpenOrders") + coinCheckHandler.getOpenOrders());
+            logger.info(WebUtil.headerString(exchCode, xCoinPair, "OpenOrders") + coinCheckHandler.getOpenOrders());
 
             System.exit(0);
         } catch ( Exception e) {
@@ -99,7 +101,7 @@ public class CryptoTrading {
 
             if (testOrderResponseJson.getBoolean("success")) {
                 String myOrderID = testOrderResponseJson.getString("id");
-                logger.info(Util.headerString(coinCheckRealTimeData.targetExchange.getExchangeName(), 
+                logger.info(WebUtil.headerString(coinCheckRealTimeData.targetExchange.getExchangeName(), 
                 coinCheckRealTimeData.targetExchange.getCoinPair(), 
                     "CancelOrder") + coinCheckHandler.cancelOrderID(myOrderID));
             } else {
@@ -115,7 +117,7 @@ public class CryptoTrading {
             for (int i = 0; i < ordersJson.length(); i++) {
                 JSONObject orderJson = ordersJson.getJSONObject(i);
                 Long orderId = (Long) orderJson.get("id");
-                logger.info(Util.headerString(exchCode, xCoinPair, "CancelOrder") + coinCheckHandler.cancelOrderID(orderId));
+                logger.info(WebUtil.headerString(exchCode, xCoinPair, "CancelOrder") + coinCheckHandler.cancelOrderID(orderId));
             }
         } else {
             logger.info(openOrderResponseJson.toString());

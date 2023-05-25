@@ -2,6 +2,7 @@ package com.metatech.crypto.exchange;
 
 import com.metatech.JavaCat.Testslf4j;
 import com.metatech.crypto.exchange.TagMap.CmcattributesEnum;
+import com.metatech.crypto.exchange.util.WebUtil;
 
 import org.slf4j.Logger;
 import java.util.TreeMap;
@@ -54,30 +55,30 @@ public class StaticdataCMC {
     }
     public String getCoinFullMap() {
         String url = this.getEndPoint(CmcattributesEnum.IDMAP); 
-        String jsonString = com.metatech.crypto.exchange.Util.requestByUrlWithHeaderParameters(url, 
+        String jsonString = com.metatech.crypto.exchange.util.WebUtil.requestByUrlWithHeaderParameters(url, 
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEY.getValue()));
-        logger.info(Util.headerString(cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
+        logger.info(WebUtil.headerString(cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.COIN.getValue()), CmcattributesEnum.IDMAP.getValue()) + jsonString);
         return jsonString;
     }
 
     public String getCoinsMap(String xCoinsString) {
         String url = this.getEndPoint(CmcattributesEnum.IDMAP) + "?symbol=" + xCoinsString; 
-        String jsonString = com.metatech.crypto.exchange.Util.requestByUrlWithHeaderParameters(url, 
+        String jsonString = com.metatech.crypto.exchange.util.WebUtil.requestByUrlWithHeaderParameters(url, 
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEY.getValue()));
-        logger.info(Util.headerString(cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
+        logger.info(WebUtil.headerString(cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.COIN.getValue()), CmcattributesEnum.IDMAP.getValue()) + jsonString);
         return jsonString;
     }
 
     public String getMetaDataV2Map(String xIdString) {
         String url = this.getEndPoint(CmcattributesEnum.METADATAV2) + "?id=" + xIdString; 
-        String jsonString = com.metatech.crypto.exchange.Util.requestByUrlWithHeaderParameters(url,
+        String jsonString = com.metatech.crypto.exchange.util.WebUtil.requestByUrlWithHeaderParameters(url,
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEY.getValue()));
-            logger.info(Util.headerString(cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
+            logger.info(WebUtil.headerString(cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
                 cmcBaseAttributesTreeMap.get(CmcattributesEnum.COIN.getValue()), CmcattributesEnum.METADATAV2.getValue()) + jsonString);
         return jsonString;
     }
@@ -86,10 +87,10 @@ public class StaticdataCMC {
     public String getListingHistory(Integer numberLimit) {
         long unixTimestamp = Instant.now().getEpochSecond();
         String url = this.getEndPoint(CmcattributesEnum.LISTINGHIST) + "?date=" + unixTimestamp + "&limit="+ numberLimit + "&convert=" + cmcBaseAttributesTreeMap.get(CmcattributesEnum.CURRENCY.getValue()); 
-        String jsonString = com.metatech.crypto.exchange.Util.requestByUrlWithHeaderParameters(url,
+        String jsonString = com.metatech.crypto.exchange.util.WebUtil.requestByUrlWithHeaderParameters(url,
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEY.getValue()));
-        logger.info(Util.headerString(cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
+        logger.info(WebUtil.headerString(cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.COIN.getValue()), CmcattributesEnum.LISTINGHIST.getValue()) + jsonString);
         return jsonString;
     }
@@ -97,10 +98,10 @@ public class StaticdataCMC {
     // From basic plan? Rejected
     public String getListingLatest(Integer numberLimit) {
         String url = this.getEndPoint(CmcattributesEnum.LISTINGLATEST) + "?limit="+ numberLimit + "&convert=" + cmcBaseAttributesTreeMap.get(CmcattributesEnum.CURRENCY.getValue()); 
-        String jsonString = com.metatech.crypto.exchange.Util.requestByUrlWithHeaderParameters(url,
+        String jsonString = com.metatech.crypto.exchange.util.WebUtil.requestByUrlWithHeaderParameters(url,
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEY.getValue()));
-        logger.info(Util.headerString(cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
+        logger.info(WebUtil.headerString(cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.COIN.getValue()), CmcattributesEnum.LISTINGLATEST.getValue()) + jsonString);
         return jsonString;
     }
@@ -108,50 +109,50 @@ public class StaticdataCMC {
     // From basic plan? Rejected
     public String getListingNew(Integer numberLimit) {
         String url = this.getEndPoint(CmcattributesEnum.LISTINGNEW) + "?limit="+ numberLimit + "&convert=" + cmcBaseAttributesTreeMap.get(CmcattributesEnum.CURRENCY.getValue()); 
-        String jsonString = com.metatech.crypto.exchange.Util.requestByUrlWithHeaderParameters(url,
+        String jsonString = com.metatech.crypto.exchange.util.WebUtil.requestByUrlWithHeaderParameters(url,
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEY.getValue()));
-        logger.info(Util.headerString(cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
+        logger.info(WebUtil.headerString(cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.COIN.getValue()), CmcattributesEnum.LISTINGNEW.getValue()) + jsonString);
         return jsonString;
     }
 
     public String getOHLCVHistory(String xIdString) {
         String url = this.getEndPoint(CmcattributesEnum.OHLCVHISTORY) + "?id="+ xIdString + "&convert=" + cmcBaseAttributesTreeMap.get(CmcattributesEnum.CURRENCY.getValue()); 
-        String jsonString = com.metatech.crypto.exchange.Util.requestByUrlWithHeaderParameters(url,
+        String jsonString = com.metatech.crypto.exchange.util.WebUtil.requestByUrlWithHeaderParameters(url,
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEY.getValue()));
-        logger.info(Util.headerString(cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
+        logger.info(WebUtil.headerString(cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.COIN.getValue()), CmcattributesEnum.OHLCVHISTORY.getValue()) + jsonString);
         return jsonString;
     }
 
     public String getOHLCVLatest(String xIdString) {
         String url = this.getEndPoint(CmcattributesEnum.OHLCVLATEST) + "?id="+ xIdString + "&convert=" + cmcBaseAttributesTreeMap.get(CmcattributesEnum.CURRENCY.getValue()); 
-        String jsonString = com.metatech.crypto.exchange.Util.requestByUrlWithHeaderParameters(url,
+        String jsonString = com.metatech.crypto.exchange.util.WebUtil.requestByUrlWithHeaderParameters(url,
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEY.getValue()));
-        logger.info(Util.headerString(cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
+        logger.info(WebUtil.headerString(cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.COIN.getValue()), CmcattributesEnum.OHLCVLATEST.getValue()) + jsonString);
         return jsonString;
     }
 
     public String getQuotesHistory(String xIdString, Long xStartTime) {
         String url = this.getEndPoint(CmcattributesEnum.QUOTESHISTORY) + "?id="+ xIdString + "&start_time=" + xStartTime + "&convert=" + cmcBaseAttributesTreeMap.get(CmcattributesEnum.CURRENCY.getValue()); 
-        String jsonString = com.metatech.crypto.exchange.Util.requestByUrlWithHeaderParameters(url,
+        String jsonString = com.metatech.crypto.exchange.util.WebUtil.requestByUrlWithHeaderParameters(url,
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEY.getValue()));
-        logger.info(Util.headerString(cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
+        logger.info(WebUtil.headerString(cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.COIN.getValue()), CmcattributesEnum.QUOTESHISTORY.getValue()) + jsonString);
         return jsonString;
     }
 
     public String getQuotesLatest( String xIdString ){
         String url = this.getEndPoint(CmcattributesEnum.QUOTESLATEST) + "?id="+ xIdString + "&convert=" + cmcBaseAttributesTreeMap.get(CmcattributesEnum.CURRENCY.getValue());  
-        String jsonString = com.metatech.crypto.exchange.Util.requestByUrlWithHeaderParameters(url,
+        String jsonString = com.metatech.crypto.exchange.util.WebUtil.requestByUrlWithHeaderParameters(url,
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEY.getValue()));
-        logger.info(Util.headerString(cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
+        logger.info(WebUtil.headerString(cmcBaseAttributesTreeMap.get(CmcattributesEnum.APIKEYHEADER.getValue()), 
             cmcBaseAttributesTreeMap.get(CmcattributesEnum.COIN.getValue()), CmcattributesEnum.QUOTESLATEST.getValue()) + jsonString);
         return jsonString;
     }

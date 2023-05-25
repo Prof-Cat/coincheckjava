@@ -2,6 +2,7 @@ package com.metatech.crypto.exchange;
 
 import com.metatech.JavaCat.Testslf4j;
 import com.metatech.crypto.exchange.TagMap.ExchangeAccessEnum;
+import com.metatech.crypto.exchange.util.WebUtil;
 
 import org.slf4j.Logger;
 import java.util.TreeMap;
@@ -27,14 +28,14 @@ public class LineHandler {
         // GET /api/exchange/orders/opens
         public String getOpenOrders() {
             String url = targetExchange.opensEndPoint();
-            String jsonString = Util.requestByUrlWithHeader(url, apiKey, apiSecret);
+            String jsonString = WebUtil.requestByUrlWithHeader(url, apiKey, apiSecret);
             return jsonString;
         }
     
         // GET /api/exchange/orders/transactions_pagination
         public String getTransactionPages() {
             String url = targetExchange.pagedTxsEndPoint();
-            String jsonString = Util.requestByUrlWithHeader(url, apiKey, apiSecret); // requestByUrlWithHeader(url);
+            String jsonString = WebUtil.requestByUrlWithHeader(url, apiKey, apiSecret); // requestByUrlWithHeader(url);
             return jsonString;
         }
     
@@ -44,36 +45,36 @@ public class LineHandler {
             String url = targetExchange.orderEndPoint();
 
             String bodyNewOrder = myNewCashOrder.buildPostBody();
-            logger.info(Util.headerString(targetExchange.getExchangeName(), targetExchange.getCoinPair(), ExchangeAccessEnum.NEWORDER.getValue()) + bodyNewOrder);
-            jsonString = Util.postByUrlWithHeader(url, apiKey, apiSecret, bodyNewOrder);
+            logger.info(WebUtil.headerString(targetExchange.getExchangeName(), targetExchange.getCoinPair(), ExchangeAccessEnum.NEWORDER.getValue()) + bodyNewOrder);
+            jsonString = WebUtil.postByUrlWithHeader(url, apiKey, apiSecret, bodyNewOrder);
             return jsonString;
         }
 
         // Cancel <id> : DELETE /api/exchange/orders/<id>
         public String cancelOrderID( String xId) {
             String url = targetExchange.orderEndPoint() + xId;
-            String jsonString = Util.deleteByUrlWithHeader(url, apiKey, apiSecret); // requestByUrlWithHeader(url);
+            String jsonString = WebUtil.deleteByUrlWithHeader(url, apiKey, apiSecret); // requestByUrlWithHeader(url);
             return jsonString;
         }
 
         // Cancel <id> : DELETE /api/exchange/orders/<id>
         public String cancelOrderID( Long xId) {
             String url = targetExchange.orderEndPoint() + Long.toString(xId);
-            String jsonString = Util.deleteByUrlWithHeader(url, apiKey, apiSecret); // requestByUrlWithHeader(url);
+            String jsonString = WebUtil.deleteByUrlWithHeader(url, apiKey, apiSecret); // requestByUrlWithHeader(url);
             return jsonString;
         }
         
         // Request <id> cancel status : GET /api/exchange/orders/cancel_status?id=[id]
         public String getCancelStatus( String xId) {
             String url = targetExchange.cancelStatusEndPoint() + xId;
-            String jsonString = Util.requestByUrlWithHeader(url, apiKey, apiSecret); // requestByUrlWithHeader(url);
+            String jsonString = WebUtil.requestByUrlWithHeader(url, apiKey, apiSecret); // requestByUrlWithHeader(url);
             return jsonString;
         }
         
         // GET /api/exchange/orders/transactions
         public String getTransactions() {
             String url = targetExchange.transactionEndPoint();
-            String jsonString = Util.requestByUrlWithHeader(url, apiKey, apiSecret); // requestByUrlWithHeader(url);
+            String jsonString = WebUtil.requestByUrlWithHeader(url, apiKey, apiSecret); // requestByUrlWithHeader(url);
             return jsonString;
         }
     

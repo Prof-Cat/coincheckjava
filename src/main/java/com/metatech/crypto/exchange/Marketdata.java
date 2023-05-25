@@ -1,6 +1,8 @@
 package com.metatech.crypto.exchange;
 
 import com.metatech.JavaCat.Testslf4j;
+import com.metatech.crypto.exchange.util.WebUtil;
+
 import org.slf4j.Logger;
 import java.util.TreeMap;
 
@@ -24,19 +26,19 @@ public class Marketdata {
 
     public String getPublicTicker() {
         String url = targetExchange.tickerEndPoint() + targetExchange.getCoinPair(); 
-        String jsonString = Util.requestByPublicUrl(url);
+        String jsonString = WebUtil.requestByPublicUrl(url);
         return jsonString;
     }
 
     public String getPublicTrades() {
         String url = targetExchange.tradesEndPoint() + targetExchange.getCoinPair(); 
-        String jsonString = Util.requestByPublicUrl(url);
+        String jsonString = WebUtil.requestByPublicUrl(url);
         return jsonString;
     }
 
     public String getPublicOrderBooks() {
         String url = targetExchange.orderBookEndPoint() + targetExchange.getCoinPair(); 
-        String jsonString = Util.requestByPublicUrl(url);
+        String jsonString = WebUtil.requestByPublicUrl(url);
         return jsonString;
     }
 

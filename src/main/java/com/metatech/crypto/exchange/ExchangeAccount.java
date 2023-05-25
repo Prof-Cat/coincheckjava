@@ -1,6 +1,8 @@
 package com.metatech.crypto.exchange;
 
 import com.metatech.JavaCat.Testslf4j;
+import com.metatech.crypto.exchange.util.WebUtil;
+
 import org.slf4j.Logger;
 
 import java.util.TreeMap;
@@ -26,14 +28,14 @@ public class ExchangeAccount {
         public String getAccountBalance() {
             String url = targetExchange.accountBallanceEndPoint();
             logger.info(url);
-            String jsonString = Util.requestByUrlWithHeader(url, apiKey, apiSecret);
+            String jsonString = WebUtil.requestByUrlWithHeader(url, apiKey, apiSecret);
             return jsonString;
         }
     
         // GET /api/accounts
         public String getAccountInfo() {
             String url = targetExchange.accountInfoEndPoint();
-            String jsonString = Util.requestByUrlWithHeader(url, apiKey, apiSecret);
+            String jsonString = WebUtil.requestByUrlWithHeader(url, apiKey, apiSecret);
             return jsonString;
         }
     
