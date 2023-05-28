@@ -82,15 +82,15 @@ public class Fix42 {
 @XmlAccessorType(XmlAccessType.FIELD)
 class Header {
     @XmlElement(name = "field")
-    private List<Field> fields;
+    private List<MsgField> fields;
 
     // Getters and setters for the fields
 
-    public List<Field> getFields() {
+    public List<MsgField> getFields() {
         return fields;
     }
 
-    public void setFields(List<Field> fields) {
+    public void setFields(List<MsgField> fields) {
         this.fields = fields;
     }
 }
@@ -98,15 +98,15 @@ class Header {
 @XmlAccessorType(XmlAccessType.FIELD)
 class Trailer {
     @XmlElement(name = "field")
-    private List<Field> fields;
+    private List<MsgField> fields;
 
     // Getters and setters for the fields
 
-    public List<Field> getFields() {
+    public List<MsgField> getFields() {
         return fields;
     }
 
-    public void setFields(List<Field> fields) {
+    public void setFields(List<MsgField> fields) {
         this.fields = fields;
     }
 }
@@ -123,7 +123,7 @@ class Message {
     private String msgcat;
 
     @XmlElement(name = "field")
-    private List<Field> fields;
+    private List<MsgField> msgFields;
 
     // Getters and setters for the fields
 
@@ -151,12 +151,12 @@ class Message {
         this.msgcat = msgcat;
     }
 
-    public List<Field> getFields() {
-        return fields;
+    public List<MsgField> getFields() {
+        return msgFields;
     }
 
-    public void setFields(List<Field> fields) {
-        this.fields = fields;
+    public void setFields(List<MsgField> msgFields) {
+        this.msgFields = msgFields;
     }
 }
 
@@ -235,4 +235,32 @@ class Value {
     public void setDescription(String description){
         this.description = description;
     }
+}
+
+@XmlAccessorType(XmlAccessType.FIELD)
+class MsgField {
+    @XmlAttribute
+    private String name;
+
+    @XmlAttribute
+    private String required;
+
+    // Getters and setters for the fields
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getRequired() {
+        return required;
+    }
+
+    public void setRequired(String required) {
+        this.required = required;
+    }
+
 }
