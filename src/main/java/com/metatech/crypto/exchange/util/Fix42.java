@@ -6,6 +6,8 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.*;
 import java.io.File;
 import java.util.List;
+
+import com.google.api.client.util.DateTime;
 import com.metatech.crypto.exchange.*;
 
 @XmlRootElement(name = "fix")
