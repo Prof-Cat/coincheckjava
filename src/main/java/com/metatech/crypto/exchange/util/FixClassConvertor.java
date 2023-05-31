@@ -165,10 +165,15 @@ public class FixClassConvertor {
 
                 if (values != null) {
                     for (Value value : values) {
-                        String enumValue = value.getEnumValue();
+                        String enumValue = value.getEnumX();
                         String description = value.getDescription();
-                        System.out.println("Value Enum: " + enumValue);
-                        System.out.println("Value Description: " + description);
+                        // Java static data definition
+                        if( enumValue.length() > 1){
+                            logger.info("public static String " + field.getName().toUpperCase() + enumValue + "= \"" + enumValue + "\";");
+                        } else {
+                            logger.info("public static char " + field.getName().toUpperCase() + enumValue + "= \"" + enumValue + "\";");
+                        }
+                        logger.info("public static String " + field.getName().toUpperCase() + enumValue + "NAME = \"" + description + "\";");
                     }
                 }
 
@@ -193,7 +198,7 @@ public class FixClassConvertor {
 
 // FIX42.xml:    <message name="MarketDataRequest" msgtype="V" msgcat="app">
 // FIX42.xml:    <message name="MarketDataSnapshotFullRefresh" msgtype="W" msgcat="app">
-            myConvertor.javaClassCode("W");
+            //myConvertor.javaClassCode("W");
 // FIX42.xml:    <message name="MarketDataIncrementalRefresh" msgtype="X" msgcat="app">
 // FIX42.xml:    <message name="MarketDataRequestReject" msgtype="Y" msgcat="app">
 // FIX42.xml:    <message name="SecurityDefinitionRequest" msgtype="c" msgcat="app">
