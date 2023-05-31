@@ -71,15 +71,22 @@ public class TagMap {
 
     public enum OrdStatusEnum {
         LOCAL('L'),
-        PENDING('A'),
         NEW('0'),
         PARTIALFILL('1'),
         FULLFILL('2'),
         DFD('3'),
         CANCELED('4'),
-        PCANCEL('5'),
+        REPLACED('5'),
+        PENDINGCANCEL('6'),
+        STOPPED('7'),
+        REJECTED('8'),
+        SUSPENDED('9'),
+        PENDINGNEW('A'),
+        CALCULATED('B'),
         EXPIRED('C'),
-        REJECTED('8');
+        ACCEPTFORBIDDING('D'),
+        PENDINGREPLACE('E');
+
         // to keep simple, not going to handle amendments, only new order, cancel
     
         private final char value;
