@@ -1,11 +1,26 @@
-package com.metatech.crypto.exchange;
+package com.metatech.crypto.exchange.util;
 
 public class TagMap {
+
+    public static String TRADEDBUSERNAME = "username";
+    public static String TRADEDBPASSWORD = "password";
+    public static String TRADEDB = "database";
+    public static String TRADEDBHOST = "host";
+    public static String TRADEDBPORT = "port";
+
+    public static String BaseCurrencyUSD = "USD";
+    public static String BaseCurrencyUSDC = "USDC";
+    public static String BaseCurrencyUSDT = "USDT";
+    public static String BaseCurrencyJPY = "JPY";
+    public static String BaseCurrencyEURO = "EURO";
+    public static String BaseCurrencyHKD = "HKD";
+    public static String BaseCurrencySGD = "SGD";
+    public static String BaseCurrencyCNY = "CNY";
 
     public TagMap(){
         // to avoid implicit constructor error
     }
-    
+
     public enum CmcattributesEnum{
         APIKEYHEADER("apiKeyHeader"),
         APIKEY("apiKey"),

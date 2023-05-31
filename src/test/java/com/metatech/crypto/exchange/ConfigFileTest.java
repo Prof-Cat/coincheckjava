@@ -2,7 +2,7 @@ package com.metatech.crypto.exchange;
 
 import org.junit.Test;
 
-import com.metatech.crypto.exchange.TagMap.ExchangeAccessEnum;
+import com.metatech.crypto.exchange.util.TagMap.ExchangeAccessEnum;
 
 import static org.junit.Assert.*;
 import java.util.Map;

@@ -1,8 +1,8 @@
 package com.metatech.crypto.exchange;
 
 import com.metatech.JavaCat.Testslf4j;
-import com.metatech.crypto.exchange.TagMap.CmcattributesEnum;
 import com.metatech.crypto.exchange.util.WebUtil;
+import com.metatech.crypto.exchange.util.TagMap.CmcattributesEnum;
 
 import org.slf4j.Logger;
 import java.util.TreeMap;

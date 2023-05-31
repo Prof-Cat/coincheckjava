@@ -2,6 +2,8 @@ package com.metatech.crypto.exchange;
 
 import java.util.Date;
 
+import com.metatech.crypto.exchange.util.TagMap;
+
 public class OrderSingle {
     protected       char    MsgType;    // 35 Y
     public char getMsgType() { return this.MsgType; }

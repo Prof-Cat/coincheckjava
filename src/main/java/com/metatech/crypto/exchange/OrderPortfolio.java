@@ -4,9 +4,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import com.fasterxml.jackson.databind.JsonSerializable.Base;
-import com.metatech.crypto.exchange.TagMap.BaseCurrency;
-import com.metatech.crypto.exchange.TagMap.ExDestination;
+import com.metatech.crypto.exchange.util.TagMap;
 import com.metatech.crypto.exchange.util.WebUtil;
+import com.metatech.crypto.exchange.util.TagMap.BaseCurrency;
+import com.metatech.crypto.exchange.util.TagMap.ExDestination;
 
 public class OrderPortfolio {
 
@@ -15,9 +16,9 @@ public class OrderPortfolio {
     protected Integer curHandInst;  // Tag <21>
     protected CoinCheckOrderType orderType;  // Tag <40>
     protected Double orderQty;   // Tag <38>
-    protected TagMap.OrdStatusEnum orderStatus;  // Tag <39>
+    protected char orderStatus;  // Tag <39>
     protected Double orderPrice;     // Tag <44>
-    protected TagMap.BaseCurrency currency;  // Tag <15>
+    protected String currency;  // Tag <15>
     protected String coinID;    // Tag <48>
     protected String coinIDSource;  // Tag <22>
     protected String coin;        // Tag <55>
@@ -39,12 +40,12 @@ public class OrderPortfolio {
         this.coinIDSource = "CMC";
         this.coinType = "NATIVE";
         this.curHandInst = 1;
-        this.currency = BaseCurrency.JPY;
+        this.currency = TagMap.BaseCurrencyJPY;
         this.expireTime = LocalTime.now();  // TODO: plus 4 hours for example
         this.orderAccount = "";
         this.orderPrice = -1.0;
         this.orderQty = 0.0;
-        this.orderStatus = TagMap.OrdStatusEnum.LOCAL;
+        this.orderStatus = TagMap.OrdStatusEnum.LOCAL.getValue();
         this.orderType = CoinCheckOrderType.LIMTTBUY;
         this.portfolioName = "my test";
         this.text = "coin check mm";
@@ -58,7 +59,7 @@ public class OrderPortfolio {
         this.orderQty = xQty;
         this.orderType = xOrderType;
         this.coin = xCoin;
-        this.currency = TagMap.BaseCurrency.fromValue(xCurrency);
+        this.currency = xCurrency;
 
         // validation - limit check & sanity check
 
@@ -115,10 +116,10 @@ public class OrderPortfolio {
     public double getQty(){
         return this.orderQty;
     }
-    public void setOrderStatus(TagMap.OrdStatusEnum xStatus){
+    public void setOrderStatus(char xStatus){
         this.orderStatus = xStatus;
     }; 
-    public TagMap.OrdStatusEnum getOrderStatus(){
+    public char getOrderStatus(){
         return this.orderStatus;
     };   
     public void setPrice(double xPrice){
@@ -127,10 +128,10 @@ public class OrderPortfolio {
     public double getPrice(){
         return this.orderPrice;
     }
-    public void setCurrency(BaseCurrency xCurrency){
+    public void setCurrency(String xCurrency){
         this.currency = xCurrency;
     }     
-    public BaseCurrency getCurrency(){
+    public String getCurrency(){
         return this.currency;
     }
     public void setCoin(String xCoin){

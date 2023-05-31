@@ -5,8 +5,8 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 
 import com.metatech.JavaCat.Testslf4j;
-import com.metatech.crypto.exchange.TagMap.BaseCurrency;
-import com.metatech.crypto.exchange.TagMap.ExDestination;
+import com.metatech.crypto.exchange.util.TagMap.BaseCurrency;
+import com.metatech.crypto.exchange.util.TagMap.ExDestination;
 
 public class MarketDataSnapShot {
     private static final Logger logger = Testslf4j.getLogger(Configuration.class);
