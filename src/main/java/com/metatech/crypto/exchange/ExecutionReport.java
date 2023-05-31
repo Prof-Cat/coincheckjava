@@ -84,13 +84,14 @@ public class ExecutionReport {
     public  void    setExecType ( char xExecType ) {
             this.ExecType= xExecType;
     }
-    protected       char    OrdStatus; // 39 Y
-    public  char    getOrdStatus() {
-            return this.OrdStatus;
-    }
-    public  void    setOrdStatus ( char xOrdStatus ) {
-            this.OrdStatus= xOrdStatus;
-    }
+
+    protected TagMap.OrdStatusEnum OrdStatus;
+    public void setOrdStatus(TagMap.OrdStatusEnum xStatus){
+        this.OrdStatus = xStatus;
+    }; 
+    public TagMap.OrdStatusEnum getOrStatus(){
+        return this.OrdStatus;
+    };   
     protected       Integer OrdRejReason; // 103 N
     public  Integer getOrdRejReason() {
             return this.OrdRejReason;
