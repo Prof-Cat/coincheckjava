@@ -173,7 +173,6 @@ class Field {
     @XmlAttribute
     private String type;
 
-    @XmlElementWrapper(name = "value")
     @XmlElement(name = "value")
     private List<Value> values;
 
@@ -215,19 +214,19 @@ class Field {
 @XmlAccessorType(XmlAccessType.FIELD)
 class Value {
     @XmlAttribute
-    private String enumValue;
+    private String enumX;
 
     @XmlAttribute
     private String description;
 
     // Getters and setters for the fields
 
-    public String getEnumValue() {
-        return enumValue;
+    public String getEnumX() {
+        return enumX;
     }
 
-    public void setEnumValue(String enumValue) {
-        this.enumValue = enumValue;
+    public void setEnumValue(String enumX) {
+        this.enumX = enumX;
     }
 
     public String getDescription() {
