@@ -1,7 +1,7 @@
 package com.metatech.crypto.exchange.util;
 
 public class FIX42TagStatic {
-
+    public static String description = "This is based on FIX4.2";
     public FIX42TagStatic(){
 
     }
