@@ -1,4 +1,4 @@
-package com.metatech.crypto.exchange;
+package com.metatech.crypto.exchange.util;
 
 import org.apache.commons.codec.binary.Hex;
 import org.slf4j.Logger;
@@ -18,21 +18,21 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 
-public class Util {
+public class WebUtil {
 
-    private static final Logger logger = Testslf4j.getLogger(Util.class);
+    private static final Logger logger = Testslf4j.getLogger(WebUtil.class);
     public static String UnderScoreSplitter = "_";
 
     // TODO : make methods thread safe
     public static String requestByUrlWithHeader(String url, String apiKey, String apiSecret){
         HttpClient client = HttpClient.newHttpClient();
-        String nonce = Util.createNonce();
+        String nonce = WebUtil.createNonce();
         // logger.info("sending request to " + url);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .header("ACCESS-KEY", apiKey)
                 .header("ACCESS-NONCE", nonce)
-                .header("ACCESS-SIGNATURE", Util.createSignature(nonce + url, apiSecret))
+                .header("ACCESS-SIGNATURE", WebUtil.createSignature(nonce + url, apiSecret))
                 .GET()
                 .build();
 
@@ -76,13 +76,13 @@ public class Util {
 
     public static String deleteByUrlWithHeader(String url, String apiKey, String apiSecret){
         HttpClient client = HttpClient.newHttpClient();
-        String nonce = Util.createNonce();
+        String nonce = WebUtil.createNonce();
         // logger.info("sending request to " + url);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .header("ACCESS-KEY", apiKey)
                 .header("ACCESS-NONCE", nonce)
-                .header("ACCESS-SIGNATURE", Util.createSignature(nonce + url, apiSecret))
+                .header("ACCESS-SIGNATURE", WebUtil.createSignature(nonce + url, apiSecret))
                 .DELETE()
                 .build();
 
@@ -102,13 +102,13 @@ public class Util {
 
     public static String postByUrlWithHeader(String url, String apiKey, String apiSecret, String xBody){
         HttpClient client = HttpClient.newHttpClient();
-        String nonce = Util.createNonce();
+        String nonce = WebUtil.createNonce();
         // logger.info("sending request to " + url);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .header("ACCESS-KEY", apiKey)
                 .header("ACCESS-NONCE", nonce)
-                .header("ACCESS-SIGNATURE", Util.createSignature(nonce + url + xBody, apiSecret))
+                .header("ACCESS-SIGNATURE", WebUtil.createSignature(nonce + url + xBody, apiSecret))
                 .POST(HttpRequest.BodyPublishers.ofString(xBody,StandardCharsets.UTF_8 ))
                 .build();
 
