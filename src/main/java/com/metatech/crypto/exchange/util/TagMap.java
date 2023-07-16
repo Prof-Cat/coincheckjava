@@ -1,12 +1,31 @@
-package com.metatech.crypto.exchange;
+package com.metatech.crypto.exchange.util;
 
 public class TagMap {
+
+    public static String TRADEDBUSERNAME = "username";
+    public static String TRADEDBPASSWORD = "password";
+    public static String TRADEDB = "database";
+    public static String TRADEDBHOST = "host";
+    public static String TRADEDBPORT = "port";
+
+    public static String BaseCurrencyUSD = "USD";
+    public static String BaseCurrencyUSDC = "USDC";
+    public static String BaseCurrencyUSDT = "USDT";
+    public static String BaseCurrencyJPY = "JPY";
+    public static String BaseCurrencyEURO = "EURO";
+    public static String BaseCurrencyHKD = "HKD";
+    public static String BaseCurrencySGD = "SGD";
+    public static String BaseCurrencyCNY = "CNY";
+
+    public TagMap(){
+        // to avoid implicit constructor error
+    }
 
     public enum CmcattributesEnum{
         APIKEYHEADER("apiKeyHeader"),
         APIKEY("apiKey"),
         CURRENCY("currency"),
-        SYMBOL("symbol"),
+        COIN("symbol"),
         BASEURL("BaseUrl"),
         IDMAP("IDMap"),
         METADATAV2("MetaDataV2"),
@@ -23,11 +42,11 @@ public class TagMap {
         public String getValue() { return this.value;}
     }
 
-    public enum ExchangeEnum{
+    public enum ExchangeAccessEnum{
         APISECRET("apiSecret"),
         APIKEY("apiKey"),
         CURRENCY("currency"),
-        SYMBOL("symbol"),
+        COIN("symbol"),
         BASEURL("BaseUrl"),
         EXHANGENAME("execName"),
         REALTIME("realtime"),
@@ -44,12 +63,12 @@ public class TagMap {
         ORDERBOOKS("endpoint_orderbook");
 
         private final String value;
-        private ExchangeEnum(String value) { this.value = value;        }
+        private ExchangeAccessEnum(String value) { this.value = value;        }
         public String getValue() { return this.value;}
     }
 
     // TOBE replaced
-    public enum OrderStatusEnum {
+    public enum OrderStatusNameEnum {
         LOCAL("local"),
         PENDING("pending"),
         NEW("new"),
@@ -61,22 +80,29 @@ public class TagMap {
         // to keep siimple, not going to handle amendments, only new order, cancel
     
         private final String value;
-        private OrderStatusEnum(String value) { this.value = value;        }
+        private OrderStatusNameEnum(String value) { this.value = value;        }
         public String getValue() { return this.value;}
     }
 
     public enum OrdStatusEnum {
         LOCAL('L'),
-        PENDING('A'),
         NEW('0'),
         PARTIALFILL('1'),
         FULLFILL('2'),
         DFD('3'),
         CANCELED('4'),
-        PCANCEL('5'),
+        REPLACED('5'),
+        PENDINGCANCEL('6'),
+        STOPPED('7'),
+        REJECTED('8'),
+        SUSPENDED('9'),
+        PENDINGNEW('A'),
+        CALCULATED('B'),
         EXPIRED('C'),
-        REJECTED('8');
-        // to keep siimple, not going to handle amendments, only new order, cancel
+        ACCEPTFORBIDDING('D'),
+        PENDINGREPLACE('E');
+
+        // to keep simple, not going to handle amendments, only new order, cancel
     
         private final char value;
         private OrdStatusEnum( char value) { this.value = value;        }
@@ -90,6 +116,18 @@ public class TagMap {
             }
             throw new IllegalArgumentException("Invalid value: " + value);
         }
+        // public static String nameOfValue(char value){
+        //     switch (value){
+        //         case OrdStatusEnum.CANCELED.getValue() :
+        //             return OrderStatusNameEnum.CANCELED.getValue();
+        //             break;
+        //         case OrdStatusEnum.REJECTED.getValue():
+        //             return 
+        //             break;
+        //         default:
+        //             break;
+        //     }
+        // }
     }
 
     public enum TimeInForceEnum{
